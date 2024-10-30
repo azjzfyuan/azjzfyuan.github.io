@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2024/10/27/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>博客搭建</title>
+    <url>/2024/10/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>一，<strong>搭建前的软件准备</strong>（git，node）<br>搭建之前需要准备的软件：<br>1.Git：官网下载：<a href="https://git-scm.com/">https://git-scm.com/</a><br>2.Node.js 官网下载：<a href="http://nodejs.cn/">http://nodejs.cn/</a></p>
+<p>二，** 安装hexo**，完成简单本地页面展示<br>1.进入cmd窗口输入指令：npm install -g hexo-cli</p>
+<p>三,接下来<strong>初始化一下hexo</strong></p>
+<p>1.输入：<code>hexo init</code></p>
+<p>2..查看是否能启动成功:输入：hexo s</p>
+<p>3.复制网址打开</p>
+<p><a href="http://localhost:4000/">http://localhost:4000/</a><br>(此时博客已经在本地搭建好了)</p>
+<p>之后，我们需要部署到github上。</p>
+<p>ctrl+C停止；</p>
+<p>三，<strong>将Hexo部署到Github</strong><br>1.Github创建个人仓库<br>注册一个github账号。登上账号后建一个仓库：仓库名为你的用户名.github.io，<img src="https://i-blog.csdnimg.cn/blog_migrate/64a3b7752c3c3c6020606d39fe1bf3f9.png" alt="在这里插入图片描述"><br>注意：<br>创建一个和你用户名相同的仓库，后面加.github.io，</p>
+<p>xxxx.github.io，其中xxx就是你注册GitHub的用户名.</p>
+<p>2.生成ssh添加到Github<br>在Github上创建仓库完成之后，需要设置ssh免密登录</p>
+<p>具体操作：打开cmd窗口：执行如下命令：</p>
+<p><code>git config --global user.name &quot;yourname&quot;</code><br><code>git config --global user.email &quot;youremail&quot;</code></p>
+<p>（这里的yourname输入你的GitHub用户名，youremail输入你GitHub的邮箱。</p>
+<p>用户名为仓库的名称，邮箱为注册github的邮箱）</p>
+<p>以防万一，用以下代码验证：</p>
+<p><code>git config user.name</code><br><code>git config user.email</code></p>
+<p>3.接着进入到家目录：C:\Users\libinbin，右击打开git bash 。<br>输入：</p>
+<p><code>ssh-keygen -t rsa -C 2412757158@qq.com</code></p>
+<p>后面是自己注册github的邮箱，然后敲三次回车，</p>
+<p>4.接着就会发现C:\Users\libinbin下多了一个.ssh目录，打开后有一个公钥，一个私钥。id_rsa.pub是公钥，我们需要打开它，复制里面的内容。</p>
+<p>然后进入github</p>
+<p>点击setings</p>
+<p>把刚刚复制的密钥粘进去，title随便起</p>
+<p>点击 Add SSH Key</p>
+<p>3.进行部署<br>这一步，我们就可以将hexo和GitHub关联起来，也就是将hexo生成的文章部署到GitHub上，打开站点配置文件 _config.yml，翻到最后，修改为</p>
+<p><code>deploy:</code></p>
+<p><code>type: git</code></p>
+<p><code>repo: git@github.com:goubin18/goubin18.github.io.git</code></p>
+<p><code>branch: main</code></p>
+<p>（注意：后面有空格）</p>
+<p>（repo：获取步骤如下<img src="D:\hp\Pictures\PixPin_2024-10-27_23-37-56.png"></p>
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/226396db3e5a8db9b1358fb7d7151d3a.png" alt="在这里插入图片描述"></p>
+<p>点进自己刚刚创建的仓库）复制</p>
+<p>4.找到自己的博客路径打开</p>
+<p>这个时候需要先安装deploy-git </p>
+<p>npm install hexo-deployer-git –save</p>
+<p>5.然后依次执行以下命令：</p>
+<p><code>hexo c   #清除缓存文件 db.json 和已生成的静态文件 public</code><br><code>hexo g       #生成网站静态文件到默认设置的 public 文件夹(hexo generate 的缩写)</code><br><code>hexo d       #自动生成网站静态文件，并部署到设定的仓库(hexo deploy 的缩写)</code></p>
+<p>注意输出hexo d时会让输个yes</p>
+<p>最后回到github上查看自己的仓库：</p>
+<p>现在就可以使用xxx.github.io来访问你的博客啦</p>
+]]></content>
+  </entry>
+</search>
