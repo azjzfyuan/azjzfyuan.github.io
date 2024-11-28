@@ -235,7 +235,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/" target="_self">
         <div>
-          ret2text 1.先托入ide中查看  2.拖入ida中： ![image-20241127192619944](https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png  1.分析函数： 确认buf距离栈底20个字节（h为16进制）     3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p = proces
+          ret2text 1.先托入ide中查看  2.拖入ida中：  1.分析函数： 确认buf距离栈底20个字节（h为16进制） gets函数可读入任意长度的数据     因此要将地址改为dt_gift函数的地址 3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p = process(&quot;./文件名&quot;)  （文件名大小写没关系） payload: ①距离为 0x20 ②
         </div>
       </a>
 

