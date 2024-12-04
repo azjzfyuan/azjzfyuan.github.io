@@ -365,6 +365,11 @@
 
 <p>妹子不理解，但是通过网络查看wp，了解到是将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
 <p>（又查看wp，发现可以先猜测一下，他是将I换成了you，然后跑一下，看看：</p>
+<p>{【打开终端，输入：.&#x2F;文件名】</p>
+<p>enter后显示： tell me something about yourself:</p>
+<p>输入III</p>
+<p>得到youyouyou</p>
+<p>猜测正确}</p>
 <p><img src="/2024/12/04/buu-pwn%E9%A2%98%E7%9B%AE%E6%8E%A2%E7%B4%A2/Users\hp\AppData\Roaming\Typora\typora-user-images\image-20241204142930678.png" alt="image-20241204142930678"></p>
 <p>好的，猜测对了）</p>
 <h3 id="-2"><a href="#-2" class="headerlink" title></a><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041415507.png" alt="image-20241204141528424"></h3><p>写exp:</p>
