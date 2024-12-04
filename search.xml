@@ -283,4 +283,49 @@
 <p>欧克欧克，找到了找到了</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>buu-pwn题目探索</title>
+    <url>/2024/12/04/buu-pwn%E9%A2%98%E7%9B%AE%E6%8E%A2%E7%B4%A2/</url>
+    <content><![CDATA[<p>BUU–pwn题目：</p>
+<h3 id="1-test-your-nc"><a href="#1-test-your-nc" class="headerlink" title="1.test_your_nc"></a><strong>1.test_your_nc</strong></h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040012137.png" alt="image-20241204001221943"></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">❯</span> <span class="hljs-string">checksec</span> <span class="hljs-string">test</span><br>[<span class="hljs-string">*</span>] <span class="hljs-string">&#x27;/home/p0ach1l/Desktop/buu-pwn/test&#x27;</span><br>    <span class="hljs-attr">Arch:</span>       <span class="hljs-string">amd64-64-little</span><br>    <span class="hljs-attr">RELRO:</span>      <span class="hljs-string">Partial</span> <span class="hljs-string">RELRO</span><br>    <span class="hljs-attr">Stack:</span>      <span class="hljs-literal">No</span> <span class="hljs-string">canary</span> <span class="hljs-string">found</span><br>    <span class="hljs-attr">NX:</span>         <span class="hljs-string">NX</span> <span class="hljs-string">enabled</span><br>    <span class="hljs-attr">PIE:</span>        <span class="hljs-string">PIE</span> <span class="hljs-string">enabled</span><br>    <span class="hljs-attr">Stripped:</span>   <span class="hljs-literal">No</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040015297.png" alt="image-20241204001508014"></p>
+<p>TAB反编译：</p>
+<p>这时可以看到system函数在main里面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040015284.png" alt="image-20241204001543176"></p>
+<p>将文件拖到Ubuntu虚拟机（pwning文件目录里）</p>
+<p>在本文件目录下打开终端，输入：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">nc 地址 端口<br></code></pre></td></tr></table></figure>
+
+<p>enter直接运行：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040023406.png" alt="image-20241204002325323"></p>
+<p>输入ls:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040025782.png" alt="image-20241204002532703"></p>
+<p>可以看到有flag,输入</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">cat flag<br></code></pre></td></tr></table></figure>
+
+<h3 id><a href="#" class="headerlink" title></a><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040025733.png" alt="image-20241204002553660"></h3><h3 id="2-rip"><a href="#2-rip" class="headerlink" title="2.rip"></a><strong>2.rip</strong></h3><p>题目附件：pwn1</p>
+<ol>
+<li></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040037377.png" alt="image-20241204003724215"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">❯ checksec pwn1<br>[*] <span class="hljs-string">&#x27;/home/p0ach1l/Desktop/pwning/pwn1&#x27;</span><br>    Arch:       amd64-<span class="hljs-number">64</span>-little<br>    RELRO:      Partial RELRO<br>    Stack:      No canary found<br>    NX:         NX unknown - GNU_STACK missing<br>    PIE:        No PIE (<span class="hljs-number">0x400000</span>)<br>    Stack:      Executable<br>    RWX:        Has RWX segments<br>    Stripped:   No<br></code></pre></td></tr></table></figure>
+
+<p>分析：（栈溢出）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040040747.png" alt="image-20241204004011598"></p>
+<p>gets函数存在溢出点；</p>
+<p>存在后门函数fun()</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040044935.png" alt="image-20241204004451795"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>pwn初次探索之ret1libc</title>
+    <url>/2024/11/30/pwn%E5%88%9D%E6%AC%A1%E6%8E%A2%E7%B4%A2%E4%B9%8Bret1libc/</url>
+    <content><![CDATA[<p><em><strong>ret1libc1</strong></em></p>
+<p>覆盖返回地址,junk</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">elf</span> <span class="hljs-operator">=</span> ELF(<span class="hljs-string">&quot;文件名&quot;</span>)<br><span class="hljs-attribute">system</span> <span class="hljs-operator">=</span> elf.plt[<span class="hljs-string">&quot;system&quot;</span>]//相当于找到system函数的入口，中间还有一个字节，然后再去填充字符<br></code></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
 </search>
