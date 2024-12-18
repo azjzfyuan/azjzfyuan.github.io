@@ -235,7 +235,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/12/17/pwn%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/" target="_self">
         <div>
-          NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag Ret2textx32位最简单：有system有binsh 后门函数的地址到传参的地址 123456from pwn import *p = process(&quot;./ret2text&quot;)sy
+          NSS-pwn 第一题  输入su 进入root模式；(管理员模式) binsh    &#x2F;bin&#x2F;sh    sh bash &#x2F; c’at’$IFS$9flag 通过构造和发送一个有效载荷，利用缓存区溢出漏洞 先调用pwntools库 利用process函数建立一个进程 Ret2textx32位最简单：有system有binsh 有后门函数的地址（直接system
         </div>
       </a>
 
